@@ -1,0 +1,14 @@
+POST signup ? username hossein password 123456 email hosseiny290@gmail.com age 20 publisher true
+POST signup ? username ali password 78945 email ali@gmail.com age 21
+POST followers ? user_id 1
+POST login ? username hossein password 123456
+GET notifications
+GET notifications read ? limit 2
+POST films ? name Soltan year 2019 length 100 price 150 summary Soltan|vared|mishavad director Soltany
+GET published ?
+PUT films ? film_id 1 year 2020 director Zoltan
+GET published ?
+POST login ? username ali password 78945
+POST money ? amount 200
+POST buy ? film_id 1
+GET purchased ?
