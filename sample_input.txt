@@ -12,3 +12,5 @@ POST login ? username ali password 78945
 POST money ? amount 200
 POST buy ? film_id 1
 GET purchased ?
+POST rate ? film_id 1 score 10
+POST comments ? film_id 1 content AALI!

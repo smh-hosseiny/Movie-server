@@ -5,6 +5,7 @@
 #include <memory>
 
 class Publisher;
+class Comment;
 
 class Movie
 {
@@ -25,6 +26,9 @@ public:
 	std::string get_director();
 	std::string get_summary();
 	std::shared_ptr<Publisher> get_publisher();
+	void set_score(int score);
+	void update_rate();
+	void set_comment(std::string content);
 
 private:
 	std::string film_name;
@@ -36,8 +40,10 @@ private:
 	std::string summary_of_movie;
 
 	double rate=0;
+	std::vector<int> scores;
 
 	std::shared_ptr<Publisher> my_publisher;
+	std::vector<std::shared_ptr<Comment> > comments;
 
 };
 

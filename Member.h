@@ -22,6 +22,7 @@ public:
 	void get_read_messages(int limit);
 	void buy_film(std::shared_ptr<Movie> movie);
 	void display_purchased_films();
+	bool has_purchased_this_film(std::shared_ptr<Movie> movie);
    
 
 private:

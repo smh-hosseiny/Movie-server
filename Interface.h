@@ -10,6 +10,8 @@ std::vector<std::vector<std::string> > get_input();
 std::vector<std::vector<std::string> > split(std::vector<std::string>);
 
 std::string get_parameter(const std::vector<std::string> &input, std::string parameter);
+int get_film_id(const std::vector<std::string> &input);
+bool isNumber(const std::string &input);
 bool is_publisher(const std::vector<std::string> &input);
 void check_syntax_errors(const std::vector<std::string> &input);
 
@@ -33,6 +35,8 @@ void handle_showing_films(const std::vector<std::string> &command);
 void handle_removing_film(const std::vector<std::string> &command);
 void handle_buying_film(const std::vector<std::string> &command);
 void handle_showing_purchased_films(const std::vector<std::string> &command);
+void handle_rating_film(const std::vector<std::string> &command);
+void handle_commenting_film(const std::vector<std::string> &command);
 
 
 

@@ -28,6 +28,10 @@
 #define PUBLISHED "published"
 #define BUY "buy"
 #define PURCHASED "purchased"
+#define RATE "rate"
+#define COMMENTS "comments"
+#define SCORE "score"
+#define CONTENT "content"
 
 #define SIGNUP "signup"
 #define LOGIN "login"
@@ -79,10 +83,32 @@ string get_parameter(const vector<string> &input, string parameter)
 {
     for(int i=0; i<input.size(); i++)
     {
-        if(input[i] == parameter)
+        if(input[i] == parameter && i != input.size())
             return input[i+1];
     }
     throw BadRequest();
+}
+
+
+bool isNumber(const string &input) 
+{ 
+    for(auto &elem : input)
+    { 
+        if(!isdigit(elem)) 
+            return false;
+    } 
+    return true; 
+} 
+
+
+int get_film_id(const vector<string> &input)
+{
+	if(!isNumber(get_parameter(input, FILM_ID)))
+	{
+		throw BadRequest();
+	}
+	int film_id =  stoi(get_parameter(input, FILM_ID));
+	return film_id;
 }
 
 bool is_publisher(const vector<string> &input)
@@ -248,6 +274,18 @@ void handle_post_command(const vector<string> &command)
 	        check_syntax_errors(command);
 	        handle_buying_film(command);
 	    }
+
+	    if(command[1] == RATE)
+	    {
+	        check_syntax_errors(command);
+	        handle_rating_film(command);
+	    }
+
+	    if(command[1] == COMMENTS)
+	    {
+	        check_syntax_errors(command);
+	        handle_commenting_film(command);
+	    }
     }
     catch(BadRequest e)
     {
@@ -365,9 +403,8 @@ void handle_editing_film(const vector<string> &input)
     string director;
 	try
 	{
-		int film_id =  stoi(get_parameter(input, FILM_ID));
+		int film_id =  get_film_id(input);
 		set_changed_parameters(input, name, year, length, price, summary, director);
-
 	    Netflix::get_instance() -> edit_film(film_id, name, year, length, price, summary, director);
     }
     catch(BadRequest e)
@@ -382,22 +419,70 @@ void handle_showing_films(const vector<string> &command)
 	Netflix::get_instance() -> show_films();
 }
 
+
 void handle_showing_purchased_films(const vector<string> &command)
 {
 	Netflix::get_instance() -> show_purchased_films();
 }
 
+
 void handle_removing_film(const vector<string> &command)
 {
-	int film_id =  stoi(get_parameter(command, FILM_ID));
-	Netflix::get_instance() -> remove_film(film_id);
+	try
+	{
+		int film_id =  get_film_id(command);
+		Netflix::get_instance() -> remove_film(film_id);
+	}
+	catch(BadRequest e)
+    {
+    	throw;
+    }
 }
 
 
 void handle_buying_film(const vector<string> &command)
 {
-	int film_id =  stoi(get_parameter(command, FILM_ID));
-	Netflix::get_instance() -> buy_film(film_id);
+	try
+	{
+		int film_id =  get_film_id(command);
+		Netflix::get_instance() -> buy_film(film_id);
+	}
+	catch(BadRequest e)
+    {
+    	throw;
+    }
+}
+
+
+void handle_rating_film(const vector<string> &command)
+{
+	try
+	{
+		int film_id =  get_film_id(command);
+		int score =  stoi(get_parameter(command, SCORE));
+		if(score < 1 || score >10)
+			throw BadRequest();
+		Netflix::get_instance() -> rate_film(film_id, score);
+	}
+	catch(BadRequest e)
+    {
+    	throw;
+    }
+}
+
+
+void handle_commenting_film(const vector<string> &command)
+{
+	try
+	{
+		int film_id =  get_film_id(command);
+		string content =  get_parameter(command, CONTENT);
+		Netflix::get_instance() -> comment_film(film_id, content);
+	}
+	catch(BadRequest e)
+    {
+    	throw;
+    }
 }
 
 

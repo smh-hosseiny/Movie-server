@@ -187,7 +187,9 @@ void Netflix::buy_film(int film_id)
 		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
 		current_user -> buy_film(movie);
 		shared_ptr<Publisher> publisher = movie->get_publisher();
-		publisher -> recieve_notification("user "+current_user->get_username()+" bought your film "+ movie->get_name());
+		//publisher -> earn_money();
+		publisher -> recieve_notification("user "+current_user->get_username()+
+									" bought your film "+ movie->get_name());
 	}
 	catch(NotFound e)
 	{
@@ -202,3 +204,46 @@ void Netflix::show_purchased_films()
 	current_user-> display_purchased_films();
 }
 
+
+void Netflix:: rate_film(int film_id, int score)
+{
+	try
+	{
+		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
+		if( !(current_user-> has_purchased_this_film(movie)))
+			throw PermissionDenied();
+		movie -> set_score(score);
+	}
+	catch(PermissionDenied e)
+	{
+		cout << "Permission Denied\n";
+	}
+	catch(NotFound e)
+	{
+		cout << "Not Found\n";
+	}
+	cout << OK << endl;
+}
+
+void Netflix::comment_film(int film_id, string content)
+{
+	try
+	{
+		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
+		if( !(current_user-> has_purchased_this_film(movie)))
+			throw PermissionDenied();
+		movie -> set_comment(content);
+		shared_ptr<Publisher> publisher = movie->get_publisher();
+		publisher -> recieve_notification("user "+current_user->get_username()+
+										" commented on your film "+ movie->get_name());
+	}
+	catch(PermissionDenied e)
+	{
+		cout << "Permission Denied\n";
+	}
+	catch(NotFound e)
+	{
+		cout << "Not Found\n";
+	}
+	cout << OK << endl;
+}

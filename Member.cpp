@@ -113,5 +113,16 @@ void Member::display_purchased_films()
 }
 
 
+bool Member:: has_purchased_this_film(shared_ptr<Movie> movie)
+{
+	for(auto elem : my_movies)
+	{
+		if(elem == movie)
+			return true;
+	}
+	return false;
+}
+
+
 string Member :: get_membership_type()
 {}

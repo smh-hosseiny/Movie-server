@@ -1,4 +1,5 @@
 #include "Movie.h"
+#include "Comment.h"
 
 using namespace std;
 
@@ -80,6 +81,28 @@ void Movie::edit(string name, int year, int length, double price, string summary
 
 	if(director != "")
 		director_of_movie = director;
+}
+
+
+void Movie::set_score(int score)
+{
+	scores.push_back(score);
+	update_rate();
+}
+
+void Movie::update_rate()
+{
+	double num_of_scores = scores.size();
+	int sum_of_scores;
+	for(auto &elem : scores)
+		sum_of_scores += elem;
+	rate = sum_of_scores/num_of_scores;
+}
+
+void Movie::set_comment(string content)
+{
+	int comment_id = comments.size()+1;
+	comments.push_back(make_shared<Comment>(Comment(content, comment_id)));
 }
 
    

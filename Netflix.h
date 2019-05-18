@@ -45,6 +45,12 @@ public:
 
    void buy_film(int film_id);
 
+   void rate_film(int film_id, int score);
+
+   void comment_film(int film_id, std::string content);
+
+  //   void catch_error()
+
 
 private:
 	static std::shared_ptr<Netflix> the_instance;
