@@ -24,8 +24,10 @@ void handle_delete_command(const std::vector<std::string> &command);
 
 void handle_signup(const std::vector<std::string> &input);
 void handle_login(const std::vector<std::string> &input);
-void handle_charge_account(const std::vector<std::string> &input);
+void handle_charging_account(const std::vector<std::string> &input);
+void handle_getting_money();
 void handle_following(const std::vector<std::string> &input);
+void handle_displaying_followers();
 
 void handle_adding_film(const std::vector<std::string> &input);
 void handle_editing_film(const std::vector<std::string> &input);

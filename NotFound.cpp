@@ -2,7 +2,12 @@
 
 using namespace std;
 
-string NotFound::what()
+string NotFound::what() const
 {
     return "Not Found\n";
+}
+
+string NotFound::type() const
+{
+    return "NotFound\n";
 }

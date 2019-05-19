@@ -14,6 +14,7 @@ public:
 	void charge_your_account(double amount);
 	std::string get_username();
 	std::string get_password();
+	std::string get_email();
 	int get_id();
 	virtual std::string get_membership_type();
 	void follow_publisher(std::shared_ptr<Member> publisher);
@@ -32,7 +33,6 @@ private:
 	std::string email;
 	int age;
 	double account;
-	bool logged_in;
 	std::vector<std::shared_ptr<Member> > followings;
 	std::vector<std::string> unread_messages;
 	std::vector<std::string> read_messages;

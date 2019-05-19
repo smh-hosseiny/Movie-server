@@ -3,6 +3,10 @@
 #include <algorithm>
 #include "Interface.h"
 #include "Netflix.h"
+#include "Exception.h"
+#include "BadRequest.h"
+#include "PermissionDenied.h"
+#include "NotFound.h"
 
 #define ZERO 0
 #define USERNAME "username"
@@ -44,9 +48,6 @@
 
 using namespace std;
 
-class NotFound {};
-class BadRequest {};
-
 vector<string> read_input()
 {
     vector<string> input;
@@ -83,7 +84,7 @@ string get_parameter(const vector<string> &input, string parameter)
 {
     for(int i=0; i<input.size(); i++)
     {
-        if(input[i] == parameter && i != input.size())
+        if(input[i] == parameter && i != input.size()-1)
             return input[i+1];
     }
     throw BadRequest();
@@ -142,9 +143,9 @@ void handle_input(const vector<vector<string> > &input)
         	identify_command(elem);
         }
 
-        catch(BadRequest &exception)
+        catch(const Exception &e)
         {
-            cout << "Bad Request\n";
+           cerr << e.what();
         }
     }
 }
@@ -166,8 +167,8 @@ void identify_command(const vector<string> &command)
 	    else if(command[0] == GET)
 	    {
 	        handle_get_command(command);
-
 	    } 
+
 	    else if(command[0] == PUT)
 	    {
 	        handle_put_command(command);
@@ -178,7 +179,7 @@ void identify_command(const vector<string> &command)
 	        handle_delete_command(command);
 	    } 
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }         
@@ -186,21 +187,35 @@ void identify_command(const vector<string> &command)
 
 void handle_delete_command(const vector<string> &command)
 {
-	if(command[1] == FILMS)
+	try
 	{
-		check_syntax_errors(command);
-        handle_removing_film(command);
+		if(command[1] == FILMS)
+		{
+			check_syntax_errors(command);
+	        handle_removing_film(command);
+		}
 	}
+	catch(const Exception &e)
+    {
+    	throw;
+    }
 }
 
 
 void handle_put_command(const vector<string> &command)
 {
-	if(command[1] == FILMS)
+	try
 	{
-		check_syntax_errors(command);
-        handle_editing_film(command);
+		if(command[1] == FILMS)
+		{
+			check_syntax_errors(command);
+	        handle_editing_film(command);
+		}
 	}
+	catch(const Exception &e)
+    {
+    	throw;
+    }
 }
 
 
@@ -224,10 +239,14 @@ void handle_get_command(const vector<string> &command)
     	check_syntax_errors(command);
         handle_showing_films(command);
     }
-     else if(command[1] == PURCHASED)
+    else if(command[1] == PURCHASED)
     {
     	check_syntax_errors(command);
         handle_showing_purchased_films(command);
+    }
+    else if(command[1] == FOLLOWERS)
+    {
+        handle_displaying_followers();
     }
     else
     	throw BadRequest();
@@ -253,8 +272,15 @@ void handle_post_command(const vector<string> &command)
 
 	    if(command[1] == MONEY)
 	    {
-	        check_syntax_errors(command);
-	        handle_charge_account(command);
+	    	if(command.size() == 2)
+	    	{
+	    		handle_getting_money();
+	    	}
+	    	else
+	    	{
+		        check_syntax_errors(command);
+		        handle_charging_account(command);
+	        }
 	    }
 
 	    if(command[1] == FOLLOWERS)
@@ -287,7 +313,7 @@ void handle_post_command(const vector<string> &command)
 	        handle_commenting_film(command);
 	    }
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }
@@ -305,7 +331,7 @@ void handle_signup(const vector<string> &input)
 	    bool publisher = is_publisher(input);
 	    Netflix :: get_instance() ->add_member(username, password, email, age, publisher);
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }
@@ -320,7 +346,7 @@ void handle_login(const vector<string> &input)
 	   string password = get_parameter(input, PASSWORD);
 	   Netflix :: get_instance() -> login_member(username, password);
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
     {
     	throw;
     }
@@ -328,17 +354,23 @@ void handle_login(const vector<string> &input)
 
 
 
-void handle_charge_account(const vector<string> &input)
+void handle_charging_account(const vector<string> &input)
 {
 	try
 	{
 	    double amount = stoi(get_parameter(input, AMOUNT));
 	    Netflix :: get_instance() -> charge_account(amount);
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }
+}
+
+
+void handle_getting_money()
+{
+    Netflix :: get_instance() -> recieve_money();
 }
 
 
@@ -349,7 +381,21 @@ void handle_following(const vector<string> &input)
 	    int id = stoi(get_parameter(input, USER_ID));
 	    Netflix :: get_instance() -> follow(id);
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
+    {
+    	throw;
+    }
+}
+
+
+
+void handle_displaying_followers()
+{
+	try
+	{
+	    Netflix :: get_instance() -> get_followers();
+    }
+    catch(const Exception &e)
     {
     	throw;
     }
@@ -369,7 +415,7 @@ void handle_adding_film(const vector<string> &input)
 	    string director =  get_parameter(input, DIRECTOR);
 	    Netflix::get_instance() -> post_film(name, year, length, price, summary, director);
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }
@@ -407,7 +453,7 @@ void handle_editing_film(const vector<string> &input)
 		set_changed_parameters(input, name, year, length, price, summary, director);
 	    Netflix::get_instance() -> edit_film(film_id, name, year, length, price, summary, director);
     }
-    catch(BadRequest e)
+    catch(const Exception &e)
     {
     	throw;
     }
@@ -433,7 +479,7 @@ void handle_removing_film(const vector<string> &command)
 		int film_id =  get_film_id(command);
 		Netflix::get_instance() -> remove_film(film_id);
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
     {
     	throw;
     }
@@ -447,7 +493,7 @@ void handle_buying_film(const vector<string> &command)
 		int film_id =  get_film_id(command);
 		Netflix::get_instance() -> buy_film(film_id);
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
     {
     	throw;
     }
@@ -464,7 +510,7 @@ void handle_rating_film(const vector<string> &command)
 			throw BadRequest();
 		Netflix::get_instance() -> rate_film(film_id, score);
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
     {
     	throw;
     }
@@ -479,7 +525,7 @@ void handle_commenting_film(const vector<string> &command)
 		string content =  get_parameter(command, CONTENT);
 		Netflix::get_instance() -> comment_film(film_id, content);
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
     {
     	throw;
     }

@@ -1,14 +1,17 @@
 #include "Member.h"
 #include "Movie.h"
 #include "MoviesRepository.h"
+#include "Exception.h"
+#include "BadRequest.h"
+#include "PermissionDenied.h"
+#include "NotFound.h"
 #include <algorithm>
 #include <iostream>
 
 using namespace std;
 
-class PermissionDenied {};
 
-Member :: Member(string user_name, string pass, string e_mail, int Age, int  id)
+Member::Member(string user_name, string pass, string e_mail, int Age, int  id)
 {
 	ID = id;
 	username = user_name;
@@ -16,42 +19,46 @@ Member :: Member(string user_name, string pass, string e_mail, int Age, int  id)
 	email = e_mail;
 	age = Age;
 	account = 0;
-	logged_in = true;
 }
 
-void Member :: charge_your_account(double amount)
+void Member::charge_your_account(double amount)
 {
 	this-> account += amount;
 }
 
-string Member :: get_username()
+string Member::get_username()
 {
 	return username;
 }
 
-string Member :: get_password()
+string Member::get_password()
 {
 	return password;
 }
 
-int Member :: get_id()
+string Member::get_email()
+{
+	return email;
+}
+
+int Member::get_id()
 {
 	return ID;
 }
 
-void Member :: follow_publisher(shared_ptr<Member> publisher)
+void Member::follow_publisher(shared_ptr<Member> publisher)
 {
 	if(find(followings.begin(), followings.end(), publisher) == followings.end())
 		followings.push_back(publisher);
 }
 
-void Member :: recieve_notification(string message)
+void Member::recieve_notification(string message)
 {
 	unread_messages.push_back(message);
 }
 
 
-void Member :: get_unread_messages()
+void Member::get_unread_messages()
 {
 	if(unread_messages.size() > 0)
 	{
@@ -70,7 +77,7 @@ void Member :: get_unread_messages()
 }
 
 
-void Member :: get_read_messages(int limit)
+void Member::get_read_messages(int limit)
 {
 	int number_of_read_messages = read_messages.size();
 	int number_of_messages_to_display;
@@ -99,9 +106,9 @@ void Member::buy_film(shared_ptr<Movie> movie)
 			throw PermissionDenied();
 		my_movies.push_back(movie);
 	}
-	catch(PermissionDenied e)
+	catch(Exception &e)
 	{
-		cout << "Permission Denied\n";
+		e.what();
 	}
 }
 
@@ -124,5 +131,5 @@ bool Member:: has_purchased_this_film(shared_ptr<Movie> movie)
 }
 
 
-string Member :: get_membership_type()
+string Member::get_membership_type()
 {}

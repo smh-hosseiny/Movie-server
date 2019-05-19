@@ -2,9 +2,9 @@ CC = g++ -std=c++11
 CFLAG= -c
 all: server.out
 server.out: main.o Netflix.o UsersRepository.o MoviesRepository.o Member.o  Movie.o \
-Publisher.o Customer.o Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
+Publisher.o Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o  
 	${CC}  main.o Netflix.o UsersRepository.o MoviesRepository.o Member.o Movie.o Publisher.o \
-Customer.o Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
+	Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
 
 
 main.o: main.cpp 
@@ -17,7 +17,7 @@ Netflix.o: Netflix.h Netflix.cpp UsersRepository.h MoviesRepository.h Member.h E
 
 
 UsersRepository.o: UsersRepository.h UsersRepository.cpp MoviesRepository.h Member.h \
-Publisher.h Customer.h Exception.h BadRequest.h PermissionDenied.h NotFound.h
+Publisher.h Exception.h BadRequest.h PermissionDenied.h NotFound.h
 	${CC} ${CFLAG} UsersRepository.cpp -o UsersRepository.o
 
 MoviesRepository.o: MoviesRepository.h MoviesRepository.cpp Movie.h Exception.h \
@@ -34,8 +34,6 @@ Member.o: Member.h Member.cpp Exception.h BadRequest.h PermissionDenied.h NotFou
 Publisher.o: Publisher.h Publisher.cpp 
 	${CC} ${CFLAG} Publisher.cpp -o Publisher.o
 
-Customer.o: Publisher.h Publisher.cpp 
-	${CC} ${CFLAG} Customer.cpp -o Customer.o
 
 Interface.o: Interface.h Interface.cpp Netflix.h Exception.h BadRequest.h \
 	PermissionDenied.h NotFound.h

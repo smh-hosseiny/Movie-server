@@ -1,8 +1,13 @@
 #include "MoviesRepository.h"
 #include "Movie.h"
+#include "Exception.h"
+#include "BadRequest.h"
+#include "PermissionDenied.h"
+#include "NotFound.h"
 #include <iostream>
+#include <iomanip> 
 
-class NotFound {};
+
 
 using namespace std;
 
@@ -36,9 +41,9 @@ void MoviesRepository::edit_movie(int film_id, string name, int year,
 		shared_ptr<Movie> movie = get_movie(film_id);
 		movie -> edit(name, year, length, price, summary, director);
 	}
-	catch(NotFound e)
+	catch(Exception &e)
 	{
-		cout << "Not Found\n";
+		e.what();
 	}
 }
 
@@ -85,8 +90,8 @@ void MoviesRepository::display_films_info(vector<shared_ptr<Movie> > movies)
  	{
  		cout << i+1 << ". " << movies[i]->get_id() << " | " << 
  		movies[i]->get_name() << " | " << movies[i]->get_length() << " | " <<
- 		movies[i]->get_price() << " | " << movies[i]->get_rate() << " | " <<
- 		movies[i]->get_year() << " | " << movies[i]->get_director() << endl;
+ 		movies[i]->get_price() << " | " << setprecision(2) << movies[i]->get_rate() << 
+ 		" | " << movies[i]->get_year() << " | " << movies[i]->get_director() << endl;
  	}
 }
 

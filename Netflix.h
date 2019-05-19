@@ -23,9 +23,13 @@ public:
 
    void charge_account(double amount);
 
+   void recieve_money();
+
    void set_current_user(std::shared_ptr<Member> user);
 
    void follow(int user_id);
+
+   void get_followers();
 
    void get_unread_notifications();
 
@@ -57,6 +61,7 @@ private:
    std::shared_ptr<UsersRepository> Users_repository;
    std::shared_ptr<MoviesRepository> Movies_repository;
    std::shared_ptr<Member> current_user;
+   int income;
 
 };
 

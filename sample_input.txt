@@ -14,3 +14,6 @@ POST buy ? film_id 1
 GET purchased ?
 POST rate ? film_id 1 score 10
 POST comments ? film_id 1 content AALI!
+POST login ? username hossein password 123456
+GET followers
+POST money

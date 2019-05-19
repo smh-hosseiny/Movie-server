@@ -2,14 +2,15 @@
 #include "UsersRepository.h"
 #include "MoviesRepository.h"
 #include "Publisher.h"
+#include "Exception.h"
+#include "BadRequest.h"
+#include "PermissionDenied.h"
+#include "NotFound.h"
 #include <iostream>
 
 #define PUBLISHER "Publisher"
 #define OK "OK"
 
-class NotFound {};
-class BadRequest {};
-class PermissionDenied {};
 
 using namespace std;
 
@@ -19,6 +20,7 @@ Netflix::Netflix()
 {
 	Users_repository = UsersRepository :: get_instance();
 	Movies_repository = MoviesRepository :: get_instance();
+	income = 0;
 }
 
 
@@ -38,9 +40,9 @@ void Netflix::add_member(string username, string pass, string email, int age, bo
 		set_current_user(Users_repository-> get_member(username, pass));
 		cout << OK << endl;
 	}
-	catch(BadRequest e)
+	catch(const Exception &e)
 	{
-		cout << "Bad Request\n";	
+		cerr << e.what();	
 	}
 }
 
@@ -52,9 +54,9 @@ void Netflix::login_member(string username, string pass)
 			set_current_user(Users_repository-> get_member(username, pass));
 		cout << OK << endl;
 	}
-	catch(NotFound e)
+	catch(const Exception &e)
 	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 }
 
@@ -67,6 +69,22 @@ void Netflix::charge_account(double amount)
 {
 	current_user -> charge_your_account(amount);
 	cout << OK << endl;
+}
+
+void Netflix::recieve_money()
+{
+	try
+	{
+		if(current_user->get_membership_type() != PUBLISHER)
+			throw(PermissionDenied());
+		int publishers_share = dynamic_pointer_cast<Publisher>(current_user) -> get_movie_sale_income();
+		income -= publishers_share;
+		cout << OK << endl;
+	}
+	catch(const Exception &e)
+	{
+		cerr << e.what();	
+	}
 }
 
 void Netflix::follow(int user_id)
@@ -84,11 +102,27 @@ void Netflix::follow(int user_id)
 		else
 			throw NotFound();
 	}
-	catch(NotFound e)
+ 	catch(const Exception &e)
 	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 }
+
+
+void Netflix::get_followers()
+{
+	try
+	{
+		if(current_user->get_membership_type() != PUBLISHER)
+			throw(PermissionDenied());
+		dynamic_pointer_cast<Publisher>(current_user) -> show_followers();
+	}
+	catch(const Exception &e)
+	{
+		cerr << e.what();	
+	}
+}
+
 
 void Netflix::get_unread_notifications()
 {
@@ -115,9 +149,9 @@ void Netflix::post_film(string name, int year, int length,
 
 		cout << OK << endl;
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
+		cerr << e.what();	
 	}
 }
 
@@ -136,14 +170,9 @@ void Netflix::edit_film(int film_id, string name, int year, int length,
 			price, summary, director);
 		cout << OK << endl;
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
-	}
-
-	catch(NotFound e)
-	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 }
 
@@ -157,9 +186,9 @@ void Netflix::show_films()
 
 		Movies_repository-> show_movies(dynamic_pointer_cast<Publisher>(current_user));
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
+		cerr << e.what();
 	}
 }
 
@@ -174,9 +203,9 @@ void Netflix::remove_film(int film_id)
 		Movies_repository-> remove_movie(film_id);
 		cout << OK << endl;
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
+		cerr << e.what();	
 	}
 }
 
@@ -187,13 +216,14 @@ void Netflix::buy_film(int film_id)
 		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
 		current_user -> buy_film(movie);
 		shared_ptr<Publisher> publisher = movie->get_publisher();
-		//publisher -> earn_money();
+		publisher -> earn_money(movie);
+		income += movie->get_price();
 		publisher -> recieve_notification("user "+current_user->get_username()+
 									" bought your film "+ movie->get_name());
 	}
-	catch(NotFound e)
+	catch(const Exception &e)
 	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 }
 
@@ -214,13 +244,9 @@ void Netflix:: rate_film(int film_id, int score)
 			throw PermissionDenied();
 		movie -> set_score(score);
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
-	}
-	catch(NotFound e)
-	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 	cout << OK << endl;
 }
@@ -237,13 +263,9 @@ void Netflix::comment_film(int film_id, string content)
 		publisher -> recieve_notification("user "+current_user->get_username()+
 										" commented on your film "+ movie->get_name());
 	}
-	catch(PermissionDenied e)
+	catch(const Exception &e)
 	{
-		cout << "Permission Denied\n";
-	}
-	catch(NotFound e)
-	{
-		cout << "Not Found\n";
+		cerr << e.what();	
 	}
 	cout << OK << endl;
 }

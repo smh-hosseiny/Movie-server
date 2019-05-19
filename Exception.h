@@ -6,7 +6,8 @@
 class Exception
 {
 public:
-    virtual std::string what() = 0;
+    virtual std::string what() const = 0;
+    virtual std::string type() const = 0;
 };
 
 
