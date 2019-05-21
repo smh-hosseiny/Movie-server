@@ -5,15 +5,17 @@ POST login ? username hossein password 123456
 GET notifications
 GET notifications read ? limit 2
 POST films ? name Soltan year 2019 length 100 price 150 summary Soltan|vared|mishavad director Soltany
-GET published ?
+POST films ? name Haji year 2000 length 150 price 100 summary Haji|vared|mishavad director HajiZadeh
 PUT films ? film_id 1 year 2020 director Zoltan
-GET published ?
 POST login ? username ali password 78945
 POST money ? amount 200
 POST buy ? film_id 1
-GET purchased ?
+GET purchased ? min_year 1999
 POST rate ? film_id 1 score 10
 POST comments ? film_id 1 content AALI!
 POST login ? username hossein password 123456
 GET followers
+GET published ? min_year 2000 max_year 2020
 POST money
+POST replies ? film_id 1 comment_id 1 content Nazan|in|harfo|soltani
+DELETE comments ? film_id 1 comment_id 1

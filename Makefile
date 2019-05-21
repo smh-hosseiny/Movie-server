@@ -7,9 +7,15 @@ Publisher.o Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o No
 	Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
 
 
-main.o: main.cpp 
+main.o: main.cpp Interface.h
 	${CC} ${CFLAG} main.cpp -o main.o
-	
+
+
+Interface.o: Interface.h Interface.cpp Netflix.h Exception.h BadRequest.h \
+	PermissionDenied.h NotFound.h
+	${CC} ${CFLAG} Interface.cpp -o Interface.o
+
+
 
 Netflix.o: Netflix.h Netflix.cpp UsersRepository.h MoviesRepository.h Member.h Exception.h \
  BadRequest.h PermissionDenied.h NotFound.h
@@ -34,10 +40,6 @@ Member.o: Member.h Member.cpp Exception.h BadRequest.h PermissionDenied.h NotFou
 Publisher.o: Publisher.h Publisher.cpp 
 	${CC} ${CFLAG} Publisher.cpp -o Publisher.o
 
-
-Interface.o: Interface.h Interface.cpp Netflix.h Exception.h BadRequest.h \
-	PermissionDenied.h NotFound.h
-	${CC} ${CFLAG} Interface.cpp -o Interface.o
 
 Comment.o: Comment.h Comment.cpp
 	${CC} ${CFLAG} Comment.cpp -o Comment.o

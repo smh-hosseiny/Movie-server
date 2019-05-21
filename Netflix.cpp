@@ -31,6 +31,16 @@ shared_ptr<Netflix> Netflix::get_instance()
 	return the_instance;
 }
 
+bool Netflix::is_loggedin_user(const vector<string> &input)
+{
+	if(current_user != NULL || (input[0] == "POST" && input[1] == "signup"))
+	{
+		return true;
+	}
+	if(input[1] != "signup")
+		throw PermissionDenied();
+}
+
 
 void Netflix::add_member(string username, string pass, string email, int age, bool publisher)
 {
@@ -42,7 +52,7 @@ void Netflix::add_member(string username, string pass, string email, int age, bo
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -56,7 +66,7 @@ void Netflix::login_member(string username, string pass)
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -83,7 +93,7 @@ void Netflix::recieve_money()
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -96,7 +106,8 @@ void Netflix::follow(int user_id)
 		{
 			current_user -> follow_publisher(publisher);
 			dynamic_pointer_cast<Publisher>(publisher)-> add_followers(current_user);
-			publisher -> recieve_notification("user "+ current_user->get_username()+" followed you"); 
+			publisher -> recieve_notification("User "+ current_user->get_username()+ " with id "+
+			to_string(current_user->get_id()) +" follow you"); 
 			cout << OK << endl;
 		}
 		else
@@ -104,7 +115,7 @@ void Netflix::follow(int user_id)
 	}
  	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -119,7 +130,7 @@ void Netflix::get_followers()
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -151,7 +162,7 @@ void Netflix::post_film(string name, int year, int length,
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -172,23 +183,51 @@ void Netflix::edit_film(int film_id, string name, int year, int length,
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
 
-void Netflix::show_films()
+void Netflix::show_publishers_films(const string &name, int min_year,
+	int max_year, double min_rate, double price, const string &director)
 {
 	try
 	{
 		if(current_user->get_membership_type() != PUBLISHER)
 			throw(PermissionDenied());
-
-		Movies_repository-> show_movies(dynamic_pointer_cast<Publisher>(current_user));
+		Movies_repository-> show_movies(dynamic_pointer_cast<Publisher>(current_user), 
+						name, min_year, max_year, min_rate, price, director);
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();
+		cout << e.what();
+	}
+}
+
+
+void Netflix::show_all_films(const string &name, int min_year,
+	int max_year, double min_rate, double price, const string &director)
+{
+	try
+	{
+		Movies_repository-> show_all_movies(name, min_year, max_year, min_rate, price, director);
+	}
+	catch(const Exception &e)
+	{
+		cout << e.what();
+	}
+}
+
+
+void Netflix::show_one_single_film(int film_id)
+{
+	try
+	{
+		Movies_repository -> show_this_film(film_id);
+	}
+	catch(const Exception &e)
+	{
+		cout << e.what();
 	}
 }
 
@@ -205,7 +244,7 @@ void Netflix::remove_film(int film_id)
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
@@ -218,20 +257,22 @@ void Netflix::buy_film(int film_id)
 		shared_ptr<Publisher> publisher = movie->get_publisher();
 		publisher -> earn_money(movie);
 		income += movie->get_price();
-		publisher -> recieve_notification("user "+current_user->get_username()+
-									" bought your film "+ movie->get_name());
+		publisher -> recieve_notification("User " +current_user->get_username() +" with id " + 
+		to_string(current_user->get_id()) + " buy your film " + movie->get_name() + " with id "+ to_string(movie->get_id()));
+		cout << OK << endl;
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
 }
 
 
 
-void Netflix::show_purchased_films()
+void Netflix::show_purchased_films(const string &name, double price, int min_year,
+	int max_year, const string &director)
 {
-	current_user-> display_purchased_films();
+	current_user-> display_purchased_films(name , price, min_year, max_year ,director);
 }
 
 
@@ -240,32 +281,73 @@ void Netflix:: rate_film(int film_id, int score)
 	try
 	{
 		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
-		if( !(current_user-> has_purchased_this_film(movie)))
+		if(!(current_user-> has_purchased_this_film(movie)))
 			throw PermissionDenied();
-		movie -> set_score(score);
+		movie -> set_score(score, current_user->get_username());
+		shared_ptr<Publisher> publisher = movie->get_publisher();
+		publisher -> recieve_notification("User " +current_user->get_username() +" with id " + 
+		to_string(current_user->get_id()) + " rate your film " + movie->get_name() + " with id "+ to_string(movie->get_id()));
+		cout << OK << endl;
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
-	cout << OK << endl;
 }
 
-void Netflix::comment_film(int film_id, string content)
+void Netflix::comment_film(int film_id, const string &content)
 {
 	try
 	{
 		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
 		if( !(current_user-> has_purchased_this_film(movie)))
 			throw PermissionDenied();
-		movie -> set_comment(content);
+		movie -> set_comment(content, current_user);
 		shared_ptr<Publisher> publisher = movie->get_publisher();
-		publisher -> recieve_notification("user "+current_user->get_username()+
-										" commented on your film "+ movie->get_name());
+		publisher -> recieve_notification("User "+current_user->get_username()+" with id " + 
+		to_string(current_user->get_id())+" comment on your film "+ movie->get_name()+ " with id "+ to_string(movie->get_id()));
+		cout << OK << endl;
 	}
 	catch(const Exception &e)
 	{
-		cerr << e.what();	
+		cout << e.what();	
 	}
-	cout << OK << endl;
+}
+
+void Netflix::delete_comment(int film_id, int comment_id)
+{
+	try
+	{
+		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
+		if(current_user->get_membership_type() != PUBLISHER)
+			throw(PermissionDenied());
+		if((Movies_repository->get_movie(film_id)) -> get_publisher() != 
+							dynamic_pointer_cast<Publisher>(current_user))
+			throw(PermissionDenied());
+
+		movie -> remove_comment(comment_id);
+		cout << OK << endl;
+	}
+	catch(const Exception &e)
+	{
+		cout << e.what();	
+	}
+}
+
+
+void Netflix::reply_to_film_comments(int film_id, int comment_id, const string &content)
+{
+	try
+	{
+		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
+		if(movie->get_publisher() != current_user)
+			throw PermissionDenied();
+		string name_of_movie = movie->get_name();
+		movie-> set_reply_to_comment(comment_id, content, name_of_movie, current_user);
+		cout << OK << endl;	
+	}
+	catch(const Exception &e)
+	{
+		cout << e.what();	
+	}
 }

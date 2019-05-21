@@ -23,7 +23,7 @@ Member::Member(string user_name, string pass, string e_mail, int Age, int  id)
 
 void Member::charge_your_account(double amount)
 {
-	this-> account += amount;
+	account += amount;
 }
 
 string Member::get_username()
@@ -65,10 +65,11 @@ void Member::get_unread_messages()
 		cout << "#. Notification Message\n";
 		for(int i=0; i<unread_messages.size(); i++)
 		{
-			cout << i+1 <<". "<< unread_messages[unread_messages.size()-i-1] << endl;
+			cout << i+1 <<". "<< unread_messages[unread_messages.size()-i-1] << "." <<endl;
 			read_messages.push_back(unread_messages[i]);
 		}
 		unread_messages.erase(unread_messages.begin(), unread_messages.begin()+unread_messages.size());
+		//unread_messages.clear();
 	}
 	else
 	{
@@ -112,11 +113,14 @@ void Member::buy_film(shared_ptr<Movie> movie)
 	}
 }
 
-void Member::display_purchased_films()
+void Member::display_purchased_films(const string &name, double price, int min_year,
+	int max_year, const string &director)
 {
-	if(my_movies.size() == 0)
-		return;
-	MoviesRepository::display_films_info(my_movies);
+	//if(my_movies.size() == 0)
+	//	return;
+	vector<shared_ptr<Movie> > my_filtered_movies = MoviesRepository::filter(my_movies, name,
+	 min_year, max_year, 0, price, director);
+	MoviesRepository::display_films_info(my_filtered_movies);
 }
 
 

@@ -2,9 +2,11 @@
 #define MOVIE_H
 
 #include <vector>
+#include <map>
 #include <memory>
 
 class Publisher;
+class Member;
 class Comment;
 
 class Movie
@@ -26,9 +28,14 @@ public:
 	std::string get_director();
 	std::string get_summary();
 	std::shared_ptr<Publisher> get_publisher();
-	void set_score(int score);
-	void update_rate();
-	void set_comment(std::string content);
+	void set_score(int score, const std::string username);
+	void update_rate(const std::string username);
+	void set_comment(const std::string &content, std::shared_ptr<Member> author);
+	std::shared_ptr<Comment> get_comment(int comment_id);
+	void set_reply_to_comment(int comment_id, const std::string &content, const std::string name_of_movie,
+	const std::shared_ptr<Member> publisher);
+	void remove_comment(int comment_id);
+	void display_comments();
 
 private:
 	std::string film_name;
@@ -39,8 +46,8 @@ private:
 	std::string director_of_movie;
 	std::string summary_of_movie;
 
-	double rate=0;
-	std::vector<int> scores;
+	double rate;
+	std::map<std::string, int> scores;
 
 	std::shared_ptr<Publisher> my_publisher;
 	std::vector<std::shared_ptr<Comment> > comments;

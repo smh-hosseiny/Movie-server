@@ -25,13 +25,13 @@ void Publisher :: add_followers(shared_ptr<Member> follower)
 
 void Publisher::show_followers()
 {
-	cout << "List of followers\n";
+	cout << "List of Followers\n";
 	cout << "#. User Id | User Username | User Email" << endl;
 	if(followers.size() > 0)
 	{
 		for(int i=0; i<followers.size(); i++)
-		cout << i+1 << ". " << followers[i]-> get_id() << " " << followers[i]-> get_username() 
-		<< " " << followers[i]-> get_email() << endl;
+		cout << i+1 << ". " << followers[i]-> get_id() << " | " << followers[i]-> get_username() 
+		<< " | " << followers[i]-> get_email() << endl;
 	}
 }
 

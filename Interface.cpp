@@ -1,7 +1,7 @@
+#include "Interface.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include "Interface.h"
 #include "Netflix.h"
 #include "Exception.h"
 #include "BadRequest.h"
@@ -36,6 +36,11 @@
 #define COMMENTS "comments"
 #define SCORE "score"
 #define CONTENT "content"
+#define MIN_YEAR "min_year"
+#define MAX_YEAR "max_year"
+#define MIN_RATE "min_rate"
+#define REPLIES "replies"
+#define COMMENT_ID "comment_id"
 
 #define SIGNUP "signup"
 #define LOGIN "login"
@@ -45,113 +50,56 @@
 #define USER_ID "user_id"
 #define FILM_ID "film_id"
 
-
 using namespace std;
 
-vector<string> read_input()
+shared_ptr<Interface> Interface::the_instance =0;
+
+shared_ptr<Interface> Interface::get_instance()
 {
-    vector<string> input;
-    string Command;
-    while (getline(cin, Command,'\n'))
-        input.push_back(Command);
-    return input;
-}    
+	if(the_instance == 0)
+		the_instance = make_shared<Interface>(Interface());
+	return the_instance;
+}
+
+void Interface::run_netflix()
+{
+	string command;
+	while(getline(cin, command,'\n'))
+	{
+		if(command != "")
+			handle_input(split(command));
+	}   
+}
 
 
-vector<vector<string> > split(vector<string> input)
+vector<string> Interface::split(string input)
 {
-	vector<vector<string> > splited(input.size());
-    for (int j = ZERO; j < input.size(); j++)
-    {
-        string token={};
-        stringstream tokenStream(input[j]);
-        while (getline(tokenStream, token,' '))
-        {
-            splited[j].push_back(token); 
-        }
-    }
+	vector<string> splited;
+    string token={};
+    stringstream tokenStream(input);
+    while (getline(tokenStream, token,' '))
+        splited.push_back(token); 
     return splited;
 }
 
 
-vector<vector<string> > get_input()
-{
-    return split(read_input());
-}
 
-
-string get_parameter(const vector<string> &input, string parameter)
+void Interface::handle_input(const vector<string> &input)
 {
-    for(int i=0; i<input.size(); i++)
+    try
     {
-        if(input[i] == parameter && i != input.size()-1)
-            return input[i+1];
+    	if(Netflix::get_instance() -> is_loggedin_user(input))
+    		identify_command(input);
     }
-    throw BadRequest();
-}
 
-
-bool isNumber(const string &input) 
-{ 
-    for(auto &elem : input)
-    { 
-        if(!isdigit(elem)) 
-            return false;
-    } 
-    return true; 
-} 
-
-
-int get_film_id(const vector<string> &input)
-{
-	if(!isNumber(get_parameter(input, FILM_ID)))
-	{
-		throw BadRequest();
-	}
-	int film_id =  stoi(get_parameter(input, FILM_ID));
-	return film_id;
-}
-
-bool is_publisher(const vector<string> &input)
-{
-    bool publisher;
-    for(int i=0; i<input.size(); i++)
+    catch(const Exception &e)
     {
-        if(input[i] == PUBLISHER)
-        {
-            input[i+1] == "true" ? publisher = true : publisher = false;
-            return publisher;
-        }
-    }
-    return false;
-}
-
-
-void check_syntax_errors(const vector<string> &input)
-{
-    if(input[2] != QUESTION_SIGN)
-        throw BadRequest();
-}
-
-
-void handle_input(const vector<vector<string> > &input)
-{
-    for(auto &elem : input)
-    {
-        try
-        {
-        	identify_command(elem);
-        }
-
-        catch(const Exception &e)
-        {
-           cerr << e.what();
-        }
+       cout << e.what();
     }
 }
 
 
-void identify_command(const vector<string> &command)
+void Interface::identify_command(const vector<string> &command)
 {
     if(command[0] != POST && command[0] != PUT &&
                  command[0] != GET && command[0] != DELETE)
@@ -185,7 +133,61 @@ void identify_command(const vector<string> &command)
     }         
 }
 
-void handle_delete_command(const vector<string> &command)
+string Interface::get_parameter(const vector<string> &input, string parameter)
+{
+    for(int i=0; i<input.size(); i++)
+    {
+        if(input[i] == parameter && i != input.size()-1)
+            return input[i+1];
+    }
+    throw BadRequest();
+}
+
+
+bool Interface::isNumber(const string &input) 
+{ 
+    for(auto &elem : input)
+    { 
+        if(!isdigit(elem)) 
+            return false;
+    } 
+    return true; 
+} 
+
+
+int Interface::get_film_id(const vector<string> &input)
+{
+	if(!isNumber(get_parameter(input, FILM_ID)))
+	{
+		throw BadRequest();
+	}
+	int film_id =  stoi(get_parameter(input, FILM_ID));
+	return film_id;
+}
+
+bool Interface::is_publisher(const vector<string> &input)
+{
+    bool publisher;
+    for(int i=0; i<input.size(); i++)
+    {
+        if(input[i] == PUBLISHER)
+        {
+            input[i+1] == "true" ? publisher = true : publisher = false;
+            return publisher;
+        }
+    }
+    return false;
+}
+
+
+void Interface::check_syntax_errors(const vector<string> &input)
+{
+    if(input[2] != QUESTION_SIGN)
+        throw BadRequest();
+}
+
+
+void Interface::handle_delete_command(const vector<string> &command)
 {
 	try
 	{
@@ -193,6 +195,12 @@ void handle_delete_command(const vector<string> &command)
 		{
 			check_syntax_errors(command);
 	        handle_removing_film(command);
+		}
+
+		if(command[1] == COMMENTS)
+		{
+			check_syntax_errors(command);
+	        handle_deleting_comment(command);
 		}
 	}
 	catch(const Exception &e)
@@ -202,7 +210,7 @@ void handle_delete_command(const vector<string> &command)
 }
 
 
-void handle_put_command(const vector<string> &command)
+void Interface::handle_put_command(const vector<string> &command)
 {
 	try
 	{
@@ -219,7 +227,7 @@ void handle_put_command(const vector<string> &command)
 }
 
 
-void handle_get_command(const vector<string> &command)
+void Interface::handle_get_command(const vector<string> &command)
 {
     if(command[1] == NOTIFICATIONS && command.size() == 2)
     {
@@ -236,14 +244,25 @@ void handle_get_command(const vector<string> &command)
     }
     else if(command[1] == PUBLISHED)
     {
-    	check_syntax_errors(command);
-        handle_showing_films(command);
+    	if(command.size() > 2)
+        	check_syntax_errors(command);
+    	handle_showing_films(command);
     }
+
+    else if(command[1] == FILMS)
+    {
+    	if(command.size() > 2)
+        	check_syntax_errors(command);
+    	handle_displaying_all_films(command);
+    }
+
     else if(command[1] == PURCHASED)
     {
-    	check_syntax_errors(command);
+    	if(command.size() > 2)
+        	check_syntax_errors(command);
         handle_showing_purchased_films(command);
     }
+
     else if(command[1] == FOLLOWERS)
     {
         handle_displaying_followers();
@@ -254,7 +273,7 @@ void handle_get_command(const vector<string> &command)
 
 
 
-void handle_post_command(const vector<string> &command)
+void Interface::handle_post_command(const vector<string> &command)
 {
 	try
 	{
@@ -312,6 +331,12 @@ void handle_post_command(const vector<string> &command)
 	        check_syntax_errors(command);
 	        handle_commenting_film(command);
 	    }
+
+		if(command[1] == REPLIES)
+	    {
+	        check_syntax_errors(command);
+	        handle_replying(command);
+	    }
     }
     catch(const Exception &e)
     {
@@ -320,7 +345,7 @@ void handle_post_command(const vector<string> &command)
 }
 
 
-void handle_signup(const vector<string> &input)
+void Interface::handle_signup(const vector<string> &input)
 {
 	try
 	{
@@ -338,7 +363,7 @@ void handle_signup(const vector<string> &input)
 }
 
 
-void handle_login(const vector<string> &input)
+void Interface::handle_login(const vector<string> &input)
 {
 	try
 	{
@@ -354,7 +379,7 @@ void handle_login(const vector<string> &input)
 
 
 
-void handle_charging_account(const vector<string> &input)
+void Interface::handle_charging_account(const vector<string> &input)
 {
 	try
 	{
@@ -368,13 +393,13 @@ void handle_charging_account(const vector<string> &input)
 }
 
 
-void handle_getting_money()
+void Interface::handle_getting_money()
 {
     Netflix :: get_instance() -> recieve_money();
 }
 
 
-void handle_following(const vector<string> &input)
+void Interface::handle_following(const vector<string> &input)
 {
 	try
 	{
@@ -389,7 +414,7 @@ void handle_following(const vector<string> &input)
 
 
 
-void handle_displaying_followers()
+void Interface::handle_displaying_followers()
 {
 	try
 	{
@@ -403,7 +428,7 @@ void handle_displaying_followers()
 
 
 
-void handle_adding_film(const vector<string> &input)
+void Interface::handle_adding_film(const vector<string> &input)
 {
 	try
 	{
@@ -422,7 +447,7 @@ void handle_adding_film(const vector<string> &input)
 }
 
 
-void set_changed_parameters(const vector<string> &input, string &name, int &year, int &length,
+void Interface::set_changed_parameters(const vector<string> &input, string &name, int &year, int &length,
  								double &price,	string &summary, string &director)
 {
 	if(find(input.begin(), input.end(), NAME) != input.end())
@@ -439,7 +464,7 @@ void set_changed_parameters(const vector<string> &input, string &name, int &year
 	    director =  get_parameter(input, DIRECTOR);
 }
 
-void handle_editing_film(const vector<string> &input)
+void Interface::handle_editing_film(const vector<string> &input)
 {
  	string name;
     int year=0 ;
@@ -460,19 +485,101 @@ void handle_editing_film(const vector<string> &input)
 }
 
 
-void handle_showing_films(const vector<string> &command)
+
+void Interface::set_filters(const vector<string> &input, string &name, int &min_year,
+	int &max_year, double &min_rate, double &price, string &director)
 {
-	Netflix::get_instance() -> show_films();
+	if(find(input.begin(), input.end(), NAME) != input.end())
+    	name =  get_parameter(input, NAME);
+    if(find(input.begin(), input.end(), MIN_YEAR) != input.end())
+	    min_year =  stoi(get_parameter(input, MIN_YEAR));
+	if(find(input.begin(), input.end(), MAX_YEAR) != input.end())
+	    max_year =  stoi(get_parameter(input, MAX_YEAR));
+	if(find(input.begin(), input.end(), PRICE) != input.end())
+	    price =  stod(get_parameter(input, PRICE));
+	if(find(input.begin(), input.end(), MIN_RATE) != input.end())
+	    min_rate =  stod(get_parameter(input, MIN_RATE));
+	if(find(input.begin(), input.end(), DIRECTOR) != input.end())
+	    director =  get_parameter(input, DIRECTOR);
 }
 
 
-void handle_showing_purchased_films(const vector<string> &command)
+void Interface::handle_showing_films(const vector<string> &command)
 {
-	Netflix::get_instance() -> show_purchased_films();
+	string name;
+    int min_year=0;
+    int max_year=0;
+    double price=0;
+    double min_rate=0;
+    string director;
+
+    try
+	{
+		if(command.size() >2)
+			set_filters(command, name, min_year, max_year, min_rate, price, director);
+	   	Netflix::get_instance() -> show_publishers_films(name, min_year, max_year, min_rate, price, director);
+    }
+    catch(const Exception &e)
+    {
+    	throw;
+    }
 }
 
 
-void handle_removing_film(const vector<string> &command)
+void Interface::handle_displaying_all_films(const vector<string> &command)
+{
+	if(find(command.begin(), command.end(), FILM_ID) != command.end())
+	{
+		int film_id =  get_film_id(command);
+		Netflix::get_instance() -> show_one_single_film(film_id);
+	}
+
+	else
+	{
+		string name;
+	    int min_year=0;
+	    int max_year=0;
+	    double price=0;
+	    double min_rate=0;
+	    string director;
+
+	    try
+		{
+			if(command.size() >2)
+				set_filters(command, name, min_year, max_year, min_rate, price, director);
+		   	Netflix::get_instance() -> show_all_films(name, min_year, max_year, min_rate, price, director);
+	    }
+	    catch(const Exception &e)
+	    {
+	    	throw;
+	    }
+    }
+}
+
+
+void Interface::handle_showing_purchased_films(const vector<string> &command)
+{
+	string name;
+    int min_year=0;
+    int max_year=0;
+    double price=0;
+    double min_rate=0;
+    string director;
+
+    try
+	{
+		if(command.size() >2)
+			set_filters(command, name, min_year, max_year, min_rate, price, director);
+		Netflix::get_instance() -> show_purchased_films(name , price, min_year, max_year, director);
+	}
+	 catch(const Exception &e)
+    {
+    	throw;
+    }
+}
+
+
+void Interface::handle_removing_film(const vector<string> &command)
 {
 	try
 	{
@@ -486,7 +593,7 @@ void handle_removing_film(const vector<string> &command)
 }
 
 
-void handle_buying_film(const vector<string> &command)
+void Interface::handle_buying_film(const vector<string> &command)
 {
 	try
 	{
@@ -500,7 +607,7 @@ void handle_buying_film(const vector<string> &command)
 }
 
 
-void handle_rating_film(const vector<string> &command)
+void Interface::handle_rating_film(const vector<string> &command)
 {
 	try
 	{
@@ -517,13 +624,44 @@ void handle_rating_film(const vector<string> &command)
 }
 
 
-void handle_commenting_film(const vector<string> &command)
+void Interface::handle_commenting_film(const vector<string> &command)
 {
 	try
 	{
 		int film_id =  get_film_id(command);
 		string content =  get_parameter(command, CONTENT);
 		Netflix::get_instance() -> comment_film(film_id, content);
+	}
+	catch(const Exception &e)
+    {
+    	throw;
+    }
+}
+
+
+void Interface::handle_deleting_comment(const vector<string> &command)
+{
+	try
+	{
+		int film_id =  get_film_id(command);
+		int comment_id =  stoi(get_parameter(command, COMMENT_ID));
+		Netflix::get_instance() -> delete_comment(film_id, comment_id);
+	}
+	catch(const Exception &e)
+    {
+    	throw;
+    }
+}
+
+
+void Interface::handle_replying(const vector<string> &command)
+{
+	try
+	{
+		int film_id =  get_film_id(command);
+		int comment_id =  stoi(get_parameter(command, COMMENT_ID));
+		string content = get_parameter(command, CONTENT);
+		Netflix::get_instance() -> reply_to_film_comments(film_id, comment_id, content);
 	}
 	catch(const Exception &e)
     {

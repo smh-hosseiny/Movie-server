@@ -38,6 +38,10 @@ bool UsersRepository :: login_member(string username, string password)
 		{
 			return true;
 		}
+		if(elem-> get_username() == username && elem-> get_password() != password)
+		{
+			throw BadRequest();
+		}
 	}
 	return false;
 }
