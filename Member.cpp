@@ -60,20 +60,15 @@ void Member::recieve_notification(string message)
 
 void Member::get_unread_messages()
 {
+	cout << "#. Notification Message\n";
 	if(unread_messages.size() > 0)
 	{
-		cout << "#. Notification Message\n";
 		for(int i=0; i<unread_messages.size(); i++)
 		{
 			cout << i+1 <<". "<< unread_messages[unread_messages.size()-i-1] << "." <<endl;
 			read_messages.push_back(unread_messages[i]);
 		}
-		unread_messages.erase(unread_messages.begin(), unread_messages.begin()+unread_messages.size());
-		//unread_messages.clear();
-	}
-	else
-	{
-		cout << "#. Notification Message\n";
+		unread_messages.clear();
 	}
 }
 
@@ -84,17 +79,13 @@ void Member::get_read_messages(int limit)
 	int number_of_messages_to_display;
 	(limit <= number_of_read_messages) ? number_of_messages_to_display= limit : 
 						number_of_messages_to_display= number_of_read_messages;
+	cout << "#. Notification Message\n";
 	if(read_messages.size() > 0)
 	{
-		cout << "#. Notification Message\n";
 		for(int i=0; i<number_of_messages_to_display; i++)
 		{
 			cout << i+1 <<". "<< read_messages[read_messages.size()-i-1] << endl;
 		}
-	}
-	else
-	{
-		cout << "#. Notification Message\n";
 	}
 }
 
@@ -107,7 +98,7 @@ void Member::buy_film(shared_ptr<Movie> movie)
 			throw PermissionDenied();
 		my_movies.push_back(movie);
 	}
-	catch(Exception &e)
+	catch(const Exception &e)
 	{
 		e.what();
 	}
@@ -116,8 +107,6 @@ void Member::buy_film(shared_ptr<Movie> movie)
 void Member::display_purchased_films(const string &name, double price, int min_year,
 	int max_year, const string &director)
 {
-	//if(my_movies.size() == 0)
-	//	return;
 	vector<shared_ptr<Movie> > my_filtered_movies = MoviesRepository::filter(my_movies, name,
 	 min_year, max_year, 0, price, director);
 	MoviesRepository::display_films_info(my_filtered_movies);

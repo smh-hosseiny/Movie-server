@@ -154,10 +154,6 @@ void Netflix::post_film(string name, int year, int length,
 			throw(PermissionDenied());
 		Movies_repository-> add_movie(name, year, length,
 			price, summary, director, dynamic_pointer_cast<Publisher>(current_user));
-
-		// dynamic_pointer_cast<Publisher>(current_user) -> post_movie(name, year, length,
-		// 	price, summary, director);
-
 		cout << OK << endl;
 	}
 	catch(const Exception &e)

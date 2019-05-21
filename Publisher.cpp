@@ -6,20 +6,32 @@
 using namespace std;
 
 
-Publisher :: Publisher(string user_name, string pass, string e_mail, int Age, int id)
+Publisher::Publisher(string user_name, string pass, string e_mail, int Age, int id)
 	: Member(user_name, pass, e_mail, Age, id)
 {}
 
-string Publisher :: get_membership_type()
+string Publisher::get_membership_type()
 {
 	return "Publisher";
 }
 
 
-void Publisher :: add_followers(shared_ptr<Member> follower)
+void Publisher::add_followers(shared_ptr<Member> follower)
 {
-	if(find(followers.begin(), followers.end(), follower) == followers.end())
-		followers.push_back(follower);
+	int id = follower -> get_id();
+	followers[id] = follower;
+}
+
+
+void Publisher::print_followers()
+{
+	int i = 1;
+	for(auto &elem : followers)
+	{
+		cout << i << ". " << elem.first << " | " << elem.second-> get_username() 
+		<< " | " << elem.second-> get_email() << endl;
+		i++;
+	}
 }
 
 
@@ -28,11 +40,7 @@ void Publisher::show_followers()
 	cout << "List of Followers\n";
 	cout << "#. User Id | User Username | User Email" << endl;
 	if(followers.size() > 0)
-	{
-		for(int i=0; i<followers.size(); i++)
-		cout << i+1 << ". " << followers[i]-> get_id() << " | " << followers[i]-> get_username() 
-		<< " | " << followers[i]-> get_email() << endl;
-	}
+		print_followers();
 }
 
 int Publisher::clculate_income(int price_of_movie, double rate)
@@ -59,8 +67,3 @@ int Publisher::get_movie_sale_income()
 {
 	return movie_sale_income;
 }
-
-
-// void post_movie(string film_name, int year_of_production, int length_of_movie,
-// 	 double price_of_movie, string summary_of_movie, string director_of_movie)
-// {}

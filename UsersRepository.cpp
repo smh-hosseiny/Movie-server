@@ -18,16 +18,30 @@ shared_ptr<UsersRepository> UsersRepository :: get_instance()
 	return the_instance;
 }
 
+bool UsersRepository::validate_username(string user_name)
+{
+	for(auto &elem : all_members)
+	{
+		if(elem->get_username() == user_name)
+			return false;
+	}
+	return true;
+}
+
 void UsersRepository :: add_member(string user_name, string pass, string e_mail, int age, bool publisher)
 {
-	int user_id = all_members.size()+1;
-	if(publisher)
+	if(validate_username(user_name))
 	{
-		all_members.push_back(make_shared<Publisher>(Publisher(user_name, pass, e_mail, age, user_id)));
+		int user_id = all_members.size()+1;
+		if(publisher)
+		{
+			all_members.push_back(make_shared<Publisher>(Publisher(user_name, pass, e_mail, age, user_id)));
+		}
+		else
+			all_members.push_back(make_shared<Member>(Member(user_name, pass, e_mail, age, user_id)));
 	}
-
 	else
-		all_members.push_back(make_shared<Member>(Member(user_name, pass, e_mail, age, user_id)));
+		throw BadRequest();
 }
 
 bool UsersRepository :: login_member(string username, string password)

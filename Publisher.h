@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include "Member.h"
 
 class Movie;
@@ -19,12 +20,11 @@ public:
    	int clculate_income(int price_of_movie, double rate);
    	void recieve_money();
    	int get_movie_sale_income();
-  	//void post_movie(std::string film_name, int year_of_production, int length_of_movie,
-  	// double price_of_movie, std::string summary_of_movie,  std::string director_of_movie);   	
+   	void print_followers();
 
 private:
 	double movie_sale_income = 0;
-	std::vector<std::shared_ptr<Member> > followers;
+	std::map<int , std::shared_ptr<Member> > followers;
 	std::vector<std::shared_ptr<Movie> > my_movies;
 
 

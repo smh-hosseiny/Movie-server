@@ -12,6 +12,8 @@ class UsersRepository
 public:
    static std::shared_ptr<UsersRepository> get_instance();
 
+   bool validate_username(std::string user_name);
+
    void add_member(std::string user_name, std::string pass, 
    			std::string e_mail, int age, bool publisher);
 	

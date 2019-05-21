@@ -9,6 +9,7 @@
 #include "NotFound.h"
 
 #define ZERO 0
+#define T_R_U_E "true"
 #define USERNAME "username"
 #define PASSWORD "password"
 #define AGE "age"
@@ -101,10 +102,6 @@ void Interface::handle_input(const vector<string> &input)
 
 void Interface::identify_command(const vector<string> &command)
 {
-    if(command[0] != POST && command[0] != PUT &&
-                 command[0] != GET && command[0] != DELETE)
-            throw BadRequest();
-
 	try
 	{
 	    if(command[0] == POST)
@@ -126,6 +123,8 @@ void Interface::identify_command(const vector<string> &command)
 	    {
 	        handle_delete_command(command);
 	    } 
+	    else
+	    	throw BadRequest();
     }
     catch(const Exception &e)
     {
@@ -135,9 +134,9 @@ void Interface::identify_command(const vector<string> &command)
 
 string Interface::get_parameter(const vector<string> &input, string parameter)
 {
-    for(int i=0; i<input.size(); i++)
+    for(int i=0; i<input.size()-1; i++)
     {
-        if(input[i] == parameter && i != input.size()-1)
+        if(input[i] == parameter)
             return input[i+1];
     }
     throw BadRequest();
@@ -172,7 +171,7 @@ bool Interface::is_publisher(const vector<string> &input)
     {
         if(input[i] == PUBLISHER)
         {
-            input[i+1] == "true" ? publisher = true : publisher = false;
+            input[i+1] == T_R_U_E ? publisher = true : publisher = false;
             return publisher;
         }
     }
@@ -197,11 +196,13 @@ void Interface::handle_delete_command(const vector<string> &command)
 	        handle_removing_film(command);
 		}
 
-		if(command[1] == COMMENTS)
+		else if(command[1] == COMMENTS)
 		{
 			check_syntax_errors(command);
 	        handle_deleting_comment(command);
 		}
+		else
+			throw NotFound();
 	}
 	catch(const Exception &e)
     {
@@ -219,6 +220,8 @@ void Interface::handle_put_command(const vector<string> &command)
 			check_syntax_errors(command);
 	        handle_editing_film(command);
 		}
+		else
+			throw NotFound();
 	}
 	catch(const Exception &e)
     {
@@ -234,13 +237,16 @@ void Interface::handle_get_command(const vector<string> &command)
         Netflix :: get_instance() -> get_unread_notifications();
     }
 
-    else if(command[1] == NOTIFICATIONS && command[3] == QUESTION_SIGN)
+    else if(command[1] == NOTIFICATIONS)
     {
+    	check_syntax_errors(command);
     	if(command[2] == READ && command[4] == LIMIT)
     	{
 	    	int limit = stoi(get_parameter(command, LIMIT));
 	        Netflix :: get_instance() -> get_read_notifications(limit);
         }
+        else
+        	throw BadRequest();
     }
     else if(command[1] == PUBLISHED)
     {
@@ -268,7 +274,7 @@ void Interface::handle_get_command(const vector<string> &command)
         handle_displaying_followers();
     }
     else
-    	throw BadRequest();
+    	throw NotFound();
 }
 
 
@@ -283,18 +289,16 @@ void Interface::handle_post_command(const vector<string> &command)
 	        handle_signup(command);
 	    }
 
-	    if(command[1] == LOGIN)
+	    else if(command[1] == LOGIN)
 	    {
 	        check_syntax_errors(command);
 	        handle_login(command);
 	    }
 
-	    if(command[1] == MONEY)
+	    else if(command[1] == MONEY)
 	    {
 	    	if(command.size() == 2)
-	    	{
 	    		handle_getting_money();
-	    	}
 	    	else
 	    	{
 		        check_syntax_errors(command);
@@ -302,41 +306,43 @@ void Interface::handle_post_command(const vector<string> &command)
 	        }
 	    }
 
-	    if(command[1] == FOLLOWERS)
+	    else if(command[1] == FOLLOWERS)
 	    {
 	        check_syntax_errors(command);
 	        handle_following(command);
 	    }
 
-	    if(command[1] == FILMS)
+	    else if(command[1] == FILMS)
 	    {
 	        check_syntax_errors(command);
 	        handle_adding_film(command);
 	    }
 
-	    if(command[1] == BUY)
+	    else if(command[1] == BUY)
 	    {
 	        check_syntax_errors(command);
 	        handle_buying_film(command);
 	    }
 
-	    if(command[1] == RATE)
+	    else if(command[1] == RATE)
 	    {
 	        check_syntax_errors(command);
 	        handle_rating_film(command);
 	    }
 
-	    if(command[1] == COMMENTS)
+	    else if(command[1] == COMMENTS)
 	    {
 	        check_syntax_errors(command);
 	        handle_commenting_film(command);
 	    }
 
-		if(command[1] == REPLIES)
+		else if(command[1] == REPLIES)
 	    {
 	        check_syntax_errors(command);
 	        handle_replying(command);
 	    }
+	    else
+	    	throw NotFound();
     }
     catch(const Exception &e)
     {
