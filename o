@@ -44,7 +44,7 @@ Price = 20000
 
 Comments
 
-Recommendation Film 
+Recommendation Film
 #. Film Id | Film Name | Film Length | Film Director
 1. 3 | film3 | 120 | director_of_film3
 OK
@@ -72,4 +72,3 @@ OK
 OK
 #. Notification Message
 1. Publisher pub with id 1 reply to your comment.
-

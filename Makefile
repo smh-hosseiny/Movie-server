@@ -1,10 +1,10 @@
 CC = g++ -std=c++11
 CFLAG= -c
 all: server.out
-server.out: main.o Netflix.o UsersRepository.o MoviesRepository.o Member.o  Movie.o \
-Publisher.o Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o  
-	${CC}  main.o Netflix.o UsersRepository.o MoviesRepository.o Member.o Movie.o Publisher.o \
-	Interface.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
+server.out: main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o PUT_Handler.o DELETE_Handler.o \
+UsersRepository.o MoviesRepository.o Member.o  Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o  
+	${CC}  main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o PUT_Handler.o DELETE_Handler.o \
+	UsersRepository.o MoviesRepository.o Member.o Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
 
 
 main.o: main.cpp Interface.h
@@ -12,8 +12,24 @@ main.o: main.cpp Interface.h
 
 
 Interface.o: Interface.h Interface.cpp Netflix.h Exception.h BadRequest.h \
-	PermissionDenied.h NotFound.h
+	PermissionDenied.h NotFound.h POST_Handler.h GET_Handler.h PUT_Handler.h DELETE_Handler.h 
 	${CC} ${CFLAG} Interface.cpp -o Interface.o
+
+Command_Handler.o: Command_Handler.h Command_Handler.cpp
+	${CC} ${CFLAG} Command_Handler.cpp -o Command_Handler.o
+
+POST_Handler.o: POST_Handler.h POST_Handler.cpp Command_Handler.h Netflix.h
+	${CC} ${CFLAG} POST_Handler.cpp -o POST_Handler.o
+
+GET_Handler.o: GET_Handler.h GET_Handler.cpp Command_Handler.h Netflix.h
+	${CC} ${CFLAG} GET_Handler.cpp -o GET_Handler.o
+
+PUT_Handler.o: PUT_Handler.h PUT_Handler.cpp Command_Handler.h Netflix.h
+	${CC} ${CFLAG} PUT_Handler.cpp -o PUT_Handler.o
+
+DELETE_Handler.o: DELETE_Handler.h DELETE_Handler.cpp Command_Handler.h Netflix.h
+	${CC} ${CFLAG} DELETE_Handler.cpp -o DELETE_Handler.o
+
 
 
 

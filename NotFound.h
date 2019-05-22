@@ -8,7 +8,6 @@ class NotFound : public Exception
 {
 public:
 	virtual std::string what() const;
-	virtual std::string type() const;
 };
 
 #endif

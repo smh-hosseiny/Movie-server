@@ -46,10 +46,22 @@ int Member::get_id()
 	return ID;
 }
 
-void Member::follow_publisher(shared_ptr<Member> publisher)
+
+vector<shared_ptr<Movie> > Member::get_purchased_movies()
+{
+	return my_movies;
+}
+
+
+
+bool Member::follow_publisher(shared_ptr<Member> publisher)
 {
 	if(find(followings.begin(), followings.end(), publisher) == followings.end())
+	{
 		followings.push_back(publisher);
+		return true;
+	}
+	return false;
 }
 
 void Member::recieve_notification(string message)

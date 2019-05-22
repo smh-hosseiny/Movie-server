@@ -60,10 +60,17 @@ void Publisher::earn_money(std::shared_ptr<Movie> movie)
 	double rate = movie->get_rate();
 	int price_of_movie = movie->get_price();
 	int publisher_income = clculate_income(price_of_movie, rate);
-	movie_sale_income += publisher_income;
+	blocked_income += publisher_income;
 }
 
 int Publisher::get_movie_sale_income()
 {
-	return movie_sale_income;
+	return blocked_income;
+}
+
+
+void Publisher::recieve_money()
+{
+	movie_sale_income += blocked_income;
+	blocked_income = 0;
 }

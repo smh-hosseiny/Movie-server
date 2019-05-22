@@ -8,7 +8,6 @@ class PermissionDenied : public Exception
 {
 public:
 	virtual std::string what() const;
-	virtual std::string type() const;
 };
 
 

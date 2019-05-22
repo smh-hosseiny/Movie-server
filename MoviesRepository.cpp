@@ -1,5 +1,6 @@
 #include "MoviesRepository.h"
 #include "Movie.h"
+#include "Member.h"
 #include "Exception.h"
 #include "BadRequest.h"
 #include "PermissionDenied.h"
@@ -8,7 +9,25 @@
 #include <algorithm>
 #include <iomanip> 
 
-
+#define FILM_ID "Film Id"
+#define FILM_NAME "Film Name"
+#define FILM_LENGTH "Film Length"
+#define FILM_PRICE "Film price"
+#define RATE "Rate"
+#define PRODUCTION_YEAR "Production Year"
+#define FILM_DIRECTOR "Film Director"
+#define SEPERATOR " | "
+#define SHARP_SIGN "#. "
+#define ID "Id"
+#define DIRECTOR "Director"
+#define LENGTH "Length"
+#define YEAR "Year"
+#define PRICE "Price"
+#define SUMMARY "Summary"
+#define DETAILS "Details of Film "
+#define IS " = "
+#define COMMENTS "Comments"
+#define RECOMMENDATION_FILM "Recommendation Film"
 
 using namespace std;
 
@@ -85,81 +104,89 @@ vector<shared_ptr<Movie> > MoviesRepository::get_movies_of_publisher(shared_ptr<
 
 void MoviesRepository::display_films_info(vector<shared_ptr<Movie> > movies)
 {
-	cout << "#. Film Id | Film Name | Film Length | Film price |"<<
-							 " Rate | Production Year | Film Director" << endl;
+	cout << SHARP_SIGN << FILM_ID << SEPERATOR << FILM_NAME << SEPERATOR << FILM_LENGTH
+	<< SEPERATOR << FILM_PRICE << SEPERATOR << RATE << SEPERATOR << PRODUCTION_YEAR << 
+	SEPERATOR << FILM_DIRECTOR << endl;
+							
  	if(movies.size() == 0)
 		return;
  	for(int i=0; i<movies.size(); i++)
  	{
- 		cout << i+1 << ". " << movies[i]->get_id() << " | " << 
- 		movies[i]->get_name() << " | " << movies[i]->get_length() << " | " <<
- 		movies[i]->get_price() << " | " << setprecision(8) << movies[i]->get_rate() << 
- 		" | " << movies[i]->get_year() << " | " << movies[i]->get_director() << endl;
+ 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
+ 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
+ 		movies[i]->get_price() << SEPERATOR << setprecision(8) << movies[i]->get_rate() << 
+ 		SEPERATOR << movies[i]->get_year() << SEPERATOR << movies[i]->get_director() << endl;
  	}
 }
 
-
-vector<shared_ptr<Movie> > MoviesRepository::get_recommended_movies(int film_id)
+void MoviesRepository::ignore_members_own_films(vector<shared_ptr<Movie> > &movies, 
+	const vector<shared_ptr<Movie> > &members_movies)
 {
-	if(all_movies.size() <= 4)
+	for(auto &elem : movies)
 	{
-		vector<shared_ptr<Movie> > recommended_movies = all_movies;
-		shared_ptr<Movie> this_movie = get_movie(film_id);
-		recommended_movies.erase(find(recommended_movies.begin(), recommended_movies.end(), this_movie));
-		return recommended_movies;
+		if(find(members_movies.begin(), members_movies.end(), elem) != members_movies.end())
+			movies.erase(find(movies.begin(), movies.end(), elem));
 	}
+}
+
+vector<shared_ptr<Movie> > MoviesRepository::send_recommendations(const vector<shared_ptr<Movie> > &movies)
+{
+	if(movies.size() <= 4)
+		return movies;
 	else
 	{
-		vector<shared_ptr<Movie> > top_movies;
-		vector<double> rates;
-		for(auto &elem : all_movies)
-		{
-			if(elem->get_id() != film_id)
-				rates.push_back(elem->get_rate());
-		}
-		int number_of_recommended_movies = 0;
-		while(number_of_recommended_movies < 4)
-		{
-			int top_rate = max_element(rates.begin(), rates.end()) - rates.begin();
-			top_movies.push_back(all_movies[top_rate]);
-			rates.erase(max_element(rates.begin(), rates.end()));
-			number_of_recommended_movies++;
-		}
-		return top_movies;
+		vector<shared_ptr<Movie> > recommended_movies(4);
+		copy(movies.begin(), movies.begin()+4, recommended_movies.begin());
+		return recommended_movies;
 	}
 }
 
 
-void MoviesRepository::show_this_film(int film_id)
+vector<shared_ptr<Movie> > MoviesRepository::get_recommended_movies(int film_id, shared_ptr<Member> member)
+{
+	vector<shared_ptr<Movie> > movies = all_movies;
+	vector<shared_ptr<Movie> > members_movies = member-> get_purchased_movies();
+	ignore_members_own_films(movies, members_movies);
+	sort(movies.begin( ), movies.end( ), [ ](const shared_ptr<Movie>& first, const shared_ptr<Movie>& second)
+	{
+	   return (first->get_rate() < second->get_rate());
+	});
+	movies.erase(find(movies.begin(), movies.end(), get_movie(film_id)));
+	return send_recommendations(movies);
+}
+
+
+void MoviesRepository::show_this_film(int film_id, shared_ptr<Member> member)
 {
 	shared_ptr<Movie> movie = get_movie(film_id);
-	cout << "Details of Film " << movie->get_name() << endl;
-	cout << "Id = " << movie->get_id() << endl;
-	cout << "Director = " << movie->get_director() << endl;
-	cout << "Length = " << movie->get_length() << endl;
-	cout << "Year = " << movie->get_year() << endl;
-	cout << "Summary = " << movie->get_summary() << endl;
-	cout << "Rate = " << movie->get_rate() << endl;
-	cout << "Price = " << movie->get_price() << endl;
+	cout << DETAILS << movie->get_name() << endl;
+	cout << ID << IS << movie->get_id() << endl;
+	cout << DIRECTOR << IS << movie->get_director() << endl;
+	cout << LENGTH << IS << movie->get_length() << endl;
+	cout << YEAR << IS << movie->get_year() << endl;
+	cout << SUMMARY << IS << movie->get_summary() << endl;
+	cout << RATE << IS << movie->get_rate() << endl;
+	cout << PRICE << IS << movie->get_price() << endl;
 
-	cout << endl << "Comments\n";
+	cout << endl << COMMENTS << endl;
 	movie-> display_comments();
 
-	vector<shared_ptr<Movie> > top_movies = get_recommended_movies(film_id);
+	vector<shared_ptr<Movie> > top_movies = get_recommended_movies(film_id, member);
 	display_recommendation(top_movies);
 }
 
 
 void MoviesRepository::display_recommendation(vector<shared_ptr<Movie> > movies)
 {
-	cout << "Recommendation Film \n";
-	cout << "#. Film Id | Film Name | Film Length | Film Director" << endl;
+	cout << RECOMMENDATION_FILM << endl;
+	cout << SHARP_SIGN << FILM_ID << SEPERATOR << FILM_NAME << SEPERATOR << FILM_LENGTH <<
+	SEPERATOR << FILM_DIRECTOR << endl;
 	if(movies.size() == 0)
 		return;
  	for(int i=0; i<movies.size(); i++)
  	{
- 		cout << i+1 << ". " << movies[i]->get_id() << " | " << 
- 		movies[i]->get_name() << " | " << movies[i]->get_length() << " | " <<
+ 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
+ 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
 		movies[i]->get_director() << endl;
  	}
 }
@@ -254,8 +281,7 @@ void MoviesRepository:: remove_movie(int film_id)
 {
 	try
 	{
-		shared_ptr<Movie> movie = get_movie(film_id);	
-		all_movies.erase(find(all_movies.begin(), all_movies.end(), movie));
+		all_movies.erase(find(all_movies.begin(), all_movies.end(), get_movie(film_id)));
 	}
 	catch(const Exception &e)
 	{

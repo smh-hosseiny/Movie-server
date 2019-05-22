@@ -16,8 +16,9 @@ public:
 	std::string get_password();
 	std::string get_email();
 	int get_id();
+	std::vector<std::shared_ptr<Movie> > get_purchased_movies();
 	virtual std::string get_membership_type();
-	void follow_publisher(std::shared_ptr<Member> publisher);
+	bool follow_publisher(std::shared_ptr<Member> publisher);
 	void recieve_notification(std::string message);
 	void get_unread_messages();
 	void get_read_messages(int limit);

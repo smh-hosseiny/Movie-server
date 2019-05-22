@@ -14,6 +14,10 @@ public:
 
    bool validate_username(std::string user_name);
 
+   std::string Hash(std::string password);
+
+   bool is_email_valid(const std::string& email);
+
    void add_member(std::string user_name, std::string pass, 
    			std::string e_mail, int age, bool publisher);
 	

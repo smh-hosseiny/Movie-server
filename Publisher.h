@@ -24,6 +24,7 @@ public:
 
 private:
 	double movie_sale_income = 0;
+	double blocked_income = 0;
 	std::map<int , std::shared_ptr<Member> > followers;
 	std::vector<std::shared_ptr<Movie> > my_movies;
 

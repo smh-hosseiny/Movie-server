@@ -28,9 +28,14 @@ public:
 	void show_all_movies(const std::string &name, int min_year, int max_year,
 	 double min_rate, double price, const std::string &director);
 
-	void show_this_film(int film_id);
+	void show_this_film(int film_id, std::shared_ptr<Member> member);
 
-	std::vector<std::shared_ptr<Movie> > get_recommended_movies(int film_id);
+	void ignore_members_own_films(std::vector<std::shared_ptr<Movie> > &movies, 
+	const std::vector<std::shared_ptr<Movie> > &members_movies);
+
+	std::vector<std::shared_ptr<Movie> > send_recommendations(const std::vector<std::shared_ptr<Movie> > &movies);
+
+	std::vector<std::shared_ptr<Movie> > get_recommended_movies(int film_id, std::shared_ptr<Member> member);
 
 	void display_recommendation(std::vector<std::shared_ptr<Movie> > movies);
 

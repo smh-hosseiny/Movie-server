@@ -26,6 +26,10 @@ public:
 
   void charge_account(double amount);
 
+  bool is_publisher_of_this_film(int film_id);
+
+  bool is_publisher();
+
   void recieve_money();
 
   void set_current_user(std::shared_ptr<Member> user);

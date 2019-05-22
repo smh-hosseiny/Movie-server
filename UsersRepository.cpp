@@ -5,6 +5,7 @@
 #include "BadRequest.h"
 #include "PermissionDenied.h"
 #include "NotFound.h"
+#include <regex>
 
 
 using namespace std;
@@ -28,17 +29,37 @@ bool UsersRepository::validate_username(string user_name)
 	return true;
 }
 
+bool UsersRepository::is_email_valid(const std::string& email)
+{
+   const regex pattern ("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+   return std::regex_match(email, pattern);
+}
+
+
+string UsersRepository::Hash(string password)
+{
+	unsigned int Hash;
+	unsigned int magic = stoi(password);
+	for(int i=0; i<password.length(); i++)
+	{
+		Hash = Hash ^ magic;
+	}
+	return to_string(Hash);
+}
+
+
+
 void UsersRepository :: add_member(string user_name, string pass, string e_mail, int age, bool publisher)
 {
-	if(validate_username(user_name))
+	if(validate_username(user_name) && is_email_valid(e_mail))
 	{
 		int user_id = all_members.size()+1;
 		if(publisher)
 		{
-			all_members.push_back(make_shared<Publisher>(Publisher(user_name, pass, e_mail, age, user_id)));
+			all_members.push_back(make_shared<Publisher>(Publisher(user_name, Hash(pass), e_mail, age, user_id)));
 		}
 		else
-			all_members.push_back(make_shared<Member>(Member(user_name, pass, e_mail, age, user_id)));
+			all_members.push_back(make_shared<Member>(Member(user_name, Hash(pass), e_mail, age, user_id)));
 	}
 	else
 		throw BadRequest();
@@ -48,11 +69,11 @@ bool UsersRepository :: login_member(string username, string password)
 {
 	for(auto &elem : all_members)
 	{
-		if(elem-> get_username() == username && elem-> get_password() == password)
+		if(elem-> get_username() == username && elem-> get_password() == Hash(password))
 		{
 			return true;
 		}
-		if(elem-> get_username() == username && elem-> get_password() != password)
+		if(elem-> get_username() == username && elem-> get_password() != Hash(password))
 		{
 			throw BadRequest();
 		}
@@ -64,7 +85,7 @@ shared_ptr<Member> UsersRepository :: get_member(string username, string passwor
 {
 	for(auto &elem : all_members)
 	{
-		if(elem-> get_username() == username && elem-> get_password() == password)
+		if(elem-> get_username() == username && elem-> get_password() == Hash(password))
 		{
 			return elem;
 		}
