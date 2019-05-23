@@ -8,11 +8,14 @@
 #include "BadRequest.h"
 #include "PermissionDenied.h"
 #include "NotFound.h"
+#include "Admin.h"
 
 #define POST "POST"
 #define PUT "PUT"
 #define GET "GET"
 #define DELETE "DELETE"
+#define MONEY "money"
+#define LOG_OUT "logout"
 #define ZERO 0
 
 using namespace std;
@@ -65,6 +68,8 @@ void Interface::handle_input(const vector<string> &input)
 
 void Interface::handle_command(const vector<string> &command)
 {
+    if(handle_if_is_admin(command))
+        return;
     try
     {
         if(command[0] == POST)
@@ -76,6 +81,38 @@ void Interface::handle_command(const vector<string> &command)
         {
             GET_Handler::get_instance() -> handle(command);
         } 
+        else
+            throw BadRequest();
+    }
+    catch(const Exception &e)
+    {
+        throw;
+    }         
+}
+
+
+bool Interface::handle_if_is_admin(const std::vector<std::string> &command)
+{
+    if(Admin::get_instance() -> is_logged_in())
+    {
+        handle_admin_command(command);
+        return true;
+    }
+    return false;
+}
+
+void Interface::handle_admin_command(const vector<string> &command)
+{
+    try
+    {
+        if(command[0] == GET && command[1] == MONEY && command.size() == 2)
+        {
+            Netflix::get_instance() -> handle_admin_request();
+        }
+        else if(command[0] == POST && command[1] == LOG_OUT && command.size() == 2) 
+        {
+            Netflix::get_instance() -> log_out_admin();
+        }            
         else
             throw BadRequest();
     }

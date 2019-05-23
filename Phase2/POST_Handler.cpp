@@ -139,15 +139,28 @@ void POST_Handler::handle_login(const vector<string> &input)
 {
 	try
 	{
-	   check_if_there_is_no_logged_in_member();
 	   string username = get_parameter(input, USERNAME);
 	   string password = get_parameter(input, PASSWORD);
+	   check_if_there_is_no_logged_in_member();
+	   if(handle_if_its_admin(username, password))
+			return;
 	   Netflix :: get_instance() -> login_member(username, password);
 	}
 	catch(const Exception &e)
     {
     	throw;
     }
+}
+
+
+bool POST_Handler::handle_if_its_admin(const string &username, const string &password)
+{
+	if(username == ADMIN && password == ADMIN)
+	{
+		Netflix::get_instance()->login_admin();
+		return true;
+	}
+	return false;
 }
 
 void POST_Handler::handle_logout()

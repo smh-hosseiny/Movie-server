@@ -1,9 +1,9 @@
 CC = g++ -std=c++11
 CFLAG= -c
 all: server.out
-server.out: main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o \
+server.out: main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o \
 UsersRepository.o MoviesRepository.o Member.o  Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o  
-	${CC}  main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o \
+	${CC}  main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o \
 	UsersRepository.o MoviesRepository.o Member.o Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
 
 
@@ -26,7 +26,7 @@ GET_Handler.o: GET_Handler.h GET_Handler.cpp Command_Handler.h Netflix.h
 
 
 Netflix.o: Netflix.h Netflix.cpp UsersRepository.h MoviesRepository.h Member.h Exception.h \
- BadRequest.h PermissionDenied.h NotFound.h
+ BadRequest.h PermissionDenied.h NotFound.h Admin.h
 	${CC} ${CFLAG} Netflix.cpp -o Netflix.o
 
 
@@ -65,6 +65,10 @@ PermissionDenied.o: PermissionDenied.h PermissionDenied.cpp
 
 NotFound.o: NotFound.h NotFound.cpp
 	${CC} ${CFLAG} NotFound.cpp -o NotFound.o
+
+Admin.o: Admin.h Admin.cpp
+	${CC} ${CFLAG} Admin.cpp -o Admin.o
+
 
 
 .PHONY: clean

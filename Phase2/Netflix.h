@@ -9,6 +9,7 @@
 class UsersRepository;
 class MoviesRepository;
 class Exception;
+class Admin;
 
 class Netflix
 {
@@ -79,12 +80,21 @@ public:
 
   void get_members_money();
 
+  double get_server_money();
+
+  void login_admin();
+
+  void handle_admin_request();
+
+  void log_out_admin();
+
 
 private:
 	static std::shared_ptr<Netflix> the_instance;
    std::shared_ptr<UsersRepository> Users_repository;
    std::shared_ptr<MoviesRepository> Movies_repository;
    std::shared_ptr<Member> current_user;
+   std::shared_ptr<Admin> admin;
    int income;
 
 };

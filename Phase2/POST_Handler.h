@@ -32,6 +32,8 @@ public:
 	void handle_deleting_comment(const std::vector<std::string> &command);
 
 	void handle_logout();
+	bool handle_if_its_admin(const std::string &username, const std::string &password);
+
 };
 
 

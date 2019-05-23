@@ -58,6 +58,7 @@
 #define DELETE_FILMS "delete_films"
 #define DELETE_COMMENTS "delete_comments"
 #define LOG_OUT "logout"
+#define ADMIN "admin"
 
 class Command_Handler
 {

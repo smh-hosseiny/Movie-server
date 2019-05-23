@@ -6,6 +6,7 @@
 #include "BadRequest.h"
 #include "PermissionDenied.h"
 #include "NotFound.h"
+#include "Admin.h"
 #include <iostream>
 
 #define PUBLISHER "Publisher"
@@ -22,9 +23,10 @@ shared_ptr<Netflix> Netflix::the_instance=0;
 
 Netflix::Netflix()
 {
-	Users_repository = UsersRepository :: get_instance();
-	Movies_repository = MoviesRepository :: get_instance();
+	Users_repository = UsersRepository::get_instance();
+	Movies_repository = MoviesRepository::get_instance();
 	income = 0;
+	admin = Admin::get_instance();
 }
 
 
@@ -38,12 +40,14 @@ shared_ptr<Netflix> Netflix::get_instance()
 bool Netflix::is_loggedin_user(const vector<string> &input)
 {
 	if(current_user != NULL || (input[0] == POST &&
- 	(input[1] == SIGNUP ||  input[1] == LOGIN  ||  input[1] == LOG_OUT)))
+ 	(input[1] == SIGNUP ||  input[1] == LOGIN  ||  input[1] == LOG_OUT)) || 
+	Admin::get_instance() -> is_logged_in())
 	{
 		return true;
 	}
 	throw PermissionDenied();
 }
+
 
 
 void Netflix::add_member(string username, string pass, string email, int age, bool publisher)
@@ -392,4 +396,29 @@ void Netflix::reply_to_film_comments(int film_id, int comment_id, const string &
 void Netflix::get_members_money()
 {
 	cout << current_user -> get_money() << endl;
+}
+
+double Netflix::get_server_money()
+{
+	return income;
+}
+
+
+void Netflix::login_admin()
+{
+	admin -> login();
+	cout << OK << endl;
+}
+
+
+void Netflix::handle_admin_request()
+{
+	cout << admin -> get_money() << endl;
+}
+
+
+void Netflix::log_out_admin()
+{
+	admin -> logout();
+	cout << OK << endl;
 }
