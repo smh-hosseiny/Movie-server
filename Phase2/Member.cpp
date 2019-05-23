@@ -52,6 +52,14 @@ vector<shared_ptr<Movie> > Member::get_purchased_movies()
 	return my_movies;
 }
 
+vector<int> Member::get_purchased_movies_ids()
+{
+	vector<int> my_movies_ids;
+	for(auto &elem : my_movies)
+		my_movies_ids.push_back(elem->get_id());
+	return my_movies_ids;
+}
+
 
 
 bool Member::follow_publisher(shared_ptr<Member> publisher)
@@ -140,7 +148,6 @@ double Member::get_money()
 {
 	return account;
 }
-
 
 string Member::get_membership_type()
 {}

@@ -40,6 +40,11 @@ shared_ptr<MoviesRepository> MoviesRepository::get_instance()
 	return the_instance;
 }
 
+MoviesRepository::MoviesRepository()
+{
+	movie_graph = make_shared<MovieGraph>(MovieGraph());
+}
+
 void MoviesRepository::add_movie(string name, int year, int length,
  double price, string summary, string director, shared_ptr<Publisher> publisher)
 {
@@ -49,6 +54,7 @@ void MoviesRepository::add_movie(string name, int year, int length,
 	if(film_is_new(new_movie->get_name()))
 	{
 		all_movies.push_back(new_movie);
+		movie_graph->add_node();
 	}
 }
 
@@ -129,30 +135,38 @@ void MoviesRepository::ignore_members_own_films(vector<shared_ptr<Movie> > &movi
 	}
 }
 
-vector<shared_ptr<Movie> > MoviesRepository::send_recommendations(const vector<shared_ptr<Movie> > &movies)
+vector<shared_ptr<Movie> > MoviesRepository::find_movies_by_id(vector<int> movies_ids)
 {
-	if(movies.size() <= 4)
-		return movies;
-	else
+	vector<shared_ptr<Movie> > movies;
+	for(auto &elem : all_movies)
 	{
-		vector<shared_ptr<Movie> > recommended_movies(4);
-		copy(movies.begin(), movies.begin()+4, recommended_movies.begin());
-		return recommended_movies;
+		if(find(movies_ids.begin(), movies_ids.end(), elem->get_id()) != movies_ids.end())
+			movies.push_back(elem);
 	}
+	return movies;
+}
+
+
+vector<shared_ptr<Movie> > MoviesRepository::send_recommendations(vector<int> users_movies_ids, int film_id)
+{
+	vector<shared_ptr<Movie> > recommended_movies;
+	vector<int> recommended_movies_ids = recommend_based_on_graph(users_movies_ids, film_id);
+	recommended_movies = find_movies_by_id(recommended_movies_ids);
+	return recommended_movies;
+}
+
+
+vector<int> MoviesRepository::recommend_based_on_graph(vector<int> users_movies_ids, int film_id)
+{
+	return movie_graph->recommend_movie(users_movies_ids, film_id);
 }
 
 
 vector<shared_ptr<Movie> > MoviesRepository::get_recommended_movies(int film_id, shared_ptr<Member> member)
 {
 	vector<shared_ptr<Movie> > movies = all_movies;
-	vector<shared_ptr<Movie> > members_movies = member-> get_purchased_movies();
-	ignore_members_own_films(movies, members_movies);
-	sort(movies.begin( ), movies.end( ), [ ](const shared_ptr<Movie>& first, const shared_ptr<Movie>& second)
-	{
-	   return (first->get_rate() < second->get_rate());
-	});
-	movies.erase(find(movies.begin(), movies.end(), get_movie(film_id)));
-	return send_recommendations(movies);
+	vector<int> users_purchased_movies = member -> get_purchased_movies_ids();
+	return send_recommendations(users_purchased_movies, film_id);
 }
 
 
@@ -286,5 +300,19 @@ void MoviesRepository:: remove_movie(int film_id)
 	catch(const Exception &e)
 	{
 		throw;
+	}
+}
+
+
+void MoviesRepository::show_graph()
+{
+	movie_graph->display_graph();
+}
+
+void MoviesRepository::check_members_favorite_movies(vector<int> purchased_movies_id)
+{
+	if(purchased_movies_id.size() > 1)
+	{
+		movie_graph->set_weights(purchased_movies_id);
 	}
 }

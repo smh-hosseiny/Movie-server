@@ -57,7 +57,9 @@ void Interface::handle_input(const vector<string> &input)
     try
     {
     	if(Netflix::get_instance() -> is_loggedin_user(input))
+        {
     		handle_command(input);
+        }
     }
 
     catch(const Exception &e)

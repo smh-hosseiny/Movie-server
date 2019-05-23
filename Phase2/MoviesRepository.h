@@ -4,12 +4,14 @@
 #include <vector>
 #include <memory>
 #include "Movie.h"
+#include "MovieGraph.h"
 
 
 class MoviesRepository
 {
 
 public:
+	MoviesRepository();
 	static std::shared_ptr<MoviesRepository> get_instance();
 
 	void add_movie(std::string film_name, int year_of_production, int length_of_movie, double price_of_movie,
@@ -33,9 +35,13 @@ public:
 	void ignore_members_own_films(std::vector<std::shared_ptr<Movie> > &movies, 
 	const std::vector<std::shared_ptr<Movie> > &members_movies);
 
-	std::vector<std::shared_ptr<Movie> > send_recommendations(const std::vector<std::shared_ptr<Movie> > &movies);
+	std::vector<std::shared_ptr<Movie> > send_recommendations(std::vector<int> users_movies_ids, int film_id);
 
 	std::vector<std::shared_ptr<Movie> > get_recommended_movies(int film_id, std::shared_ptr<Member> member);
+
+	std::vector<int> recommend_based_on_graph(std::vector<int> users_movies_ids, int film_id);
+
+	std::vector<std::shared_ptr<Movie> > find_movies_by_id(std::vector<int> movies_ids);
 
 	void display_recommendation(std::vector<std::shared_ptr<Movie> > movies);
 
@@ -59,10 +65,15 @@ public:
 
 	void remove_movie(int film_id);
 
+	void show_graph();
+
+	void check_members_favorite_movies(const std::vector<int> purchased_movies_id);
+
 
 private:
 	static std::shared_ptr<MoviesRepository> the_instance;
 	std::vector<std::shared_ptr<Movie> > all_movies;
+	std::shared_ptr<MovieGraph> movie_graph;
 } ;
 
 

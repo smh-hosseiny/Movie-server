@@ -1,9 +1,9 @@
 CC = g++ -std=c++11
 CFLAG= -c
 all: server.out
-server.out: main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o \
+server.out: main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o MovieGraph.o \
 UsersRepository.o MoviesRepository.o Member.o  Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o  
-	${CC}  main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o \
+	${CC}  main.o Netflix.o Interface.o Command_Handler.o POST_Handler.o GET_Handler.o Admin.o MovieGraph.o \
 	UsersRepository.o MoviesRepository.o Member.o Movie.o Publisher.o Comment.o Exception.o BadRequest.o PermissionDenied.o NotFound.o -o server.out 
 
 
@@ -34,7 +34,7 @@ UsersRepository.o: UsersRepository.h UsersRepository.cpp MoviesRepository.h Memb
 Publisher.h Exception.h BadRequest.h PermissionDenied.h NotFound.h
 	${CC} ${CFLAG} UsersRepository.cpp -o UsersRepository.o
 
-MoviesRepository.o: MoviesRepository.h MoviesRepository.cpp Movie.h Exception.h \
+MoviesRepository.o: MoviesRepository.h MoviesRepository.cpp MovieGraph.h Movie.h Exception.h \
  BadRequest.h PermissionDenied.h NotFound.h
 	${CC} ${CFLAG} MoviesRepository.cpp -o MoviesRepository.o
 
@@ -68,6 +68,9 @@ NotFound.o: NotFound.h NotFound.cpp
 
 Admin.o: Admin.h Admin.cpp
 	${CC} ${CFLAG} Admin.cpp -o Admin.o
+
+MovieGraph.o: MovieGraph.h MovieGraph.cpp
+	${CC} ${CFLAG} MovieGraph.cpp -o MovieGraph.o
 
 
 

@@ -17,6 +17,7 @@ public:
 	std::string get_email();
 	int get_id();
 	std::vector<std::shared_ptr<Movie> > get_purchased_movies();
+	std::vector<int> get_purchased_movies_ids();
 	virtual std::string get_membership_type();
 	bool follow_publisher(std::shared_ptr<Member> publisher);
 	void recieve_notification(std::string message);

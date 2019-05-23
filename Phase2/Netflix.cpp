@@ -297,6 +297,7 @@ void Netflix::buy_film(int film_id)
 	{
 		shared_ptr<Movie> movie = Movies_repository->get_movie(film_id);
 		current_user -> buy_film(movie);
+		Movies_repository-> check_members_favorite_movies(current_user->get_purchased_movies_ids());
 		shared_ptr<Publisher> publisher = movie->get_publisher();
 		movie->get_publisher() -> earn_money(movie);
 		income += movie->get_price();
@@ -421,4 +422,5 @@ void Netflix::log_out_admin()
 {
 	admin -> logout();
 	cout << OK << endl;
+	//Movies_repository->show_graph();
 }
