@@ -1,6 +1,8 @@
 #include "Admin.h"
 #include "Netflix.h"
 
+#define ADMIN "admin"
+
 using namespace std;
 
 shared_ptr<Admin> Admin::the_instance=0;
@@ -8,7 +10,7 @@ shared_ptr<Admin> Admin::the_instance=0;
 shared_ptr<Admin> Admin::get_instance()
 {
 	if(the_instance == 0)
-		the_instance = make_shared<Admin>(Admin("admin", "admin"));
+		the_instance = make_shared<Admin>(Admin(ADMIN, ADMIN));
 	return the_instance;
 }
 

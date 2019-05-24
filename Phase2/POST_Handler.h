@@ -19,6 +19,7 @@ public:
 	void handle_getting_money();
 	void handle_following(const std::vector<std::string> &input);
 	void handle_adding_film(const std::vector<std::string> &input);
+	void apply_editing_film(const std::vector<std::string> &input);
 	void handle_commenting_film(const std::vector<std::string> &command);
 	void handle_replying(const std::vector<std::string> &command);
 	void handle_buying_film(const std::vector<std::string> &command);

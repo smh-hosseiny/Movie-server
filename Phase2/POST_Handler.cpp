@@ -15,13 +15,13 @@ void POST_Handler::handle(const vector<string> &command)
 {
 	try
 	{
-	    if(command[1] == SIGNUP)
+	    if(command[1] == SIGNUP && (command.size() == 11 || command.size() == 13))
 	    {
 	        check_syntax_errors(command);
 	        handle_signup(command);
 	    }
 
-	    else if(command[1] == LOGIN)
+	    else if(command[1] == LOGIN && command.size() == 7)
 	    {
 	        check_syntax_errors(command);
 	        handle_login(command);
@@ -31,14 +31,14 @@ void POST_Handler::handle(const vector<string> &command)
 	    {
 	    	if(command.size() == 2)
 	    		handle_getting_money();
-	    	else
+	    	else if (command.size() == 5)
 	    	{
 		        check_syntax_errors(command);
 		        handle_charging_account(command);
 	        }
 	    }
 
-	    else if(command[1] == FOLLOWERS)
+	    else if(command[1] == FOLLOWERS && command.size() == 5)
 	    {
 	        check_syntax_errors(command);
 	        handle_following(command);
@@ -50,26 +50,26 @@ void POST_Handler::handle(const vector<string> &command)
 	        handle_adding_film(command);
 	    }
 
-	    else if(command[1] == BUY)
+	    else if(command[1] == BUY && command.size() == 5)
 	    {
 	        check_syntax_errors(command);
 	        handle_buying_film(command);
 	    }
 
-	    else if(command[1] == RATE)
+	    else if(command[1] == RATE && command.size() == 7)
 	    {
 	        check_syntax_errors(command);
 	        handle_rating_film(command);
 	    }
 
-	    else if(command[1] == COMMENTS)
+	    else if(command[1] == COMMENTS && command.size() == 7)
 	    {
 	        check_syntax_errors(command);
 	        handle_commenting_film(command);
 	    }
 
 
-		else if(command[1] == REPLIES)
+		else if(command[1] == REPLIES && command.size() == 9)
 	    {
 	        check_syntax_errors(command);
 	        handle_replying(command);
@@ -82,19 +82,19 @@ void POST_Handler::handle(const vector<string> &command)
 		}
 
 
-		else if(command[1] == DELETE_FILMS)
+		else if(command[1] == DELETE_FILMS && command.size() == 5)
 		{
 			check_syntax_errors(command);
 	        handle_removing_film(command);
 		}
 
-		else if(command[1] == DELETE_COMMENTS)
+		else if(command[1] == DELETE_COMMENTS && command.size() == 7)
 		{
 			check_syntax_errors(command);
 	        handle_deleting_comment(command);
 		}
 
-		else if(command[1] == LOG_OUT)
+		else if(command[1] == LOG_OUT && command.size() == 2)
 		{
 			handle_logout();
 		}
@@ -295,7 +295,7 @@ void POST_Handler::handle_replying(const vector<string> &command)
 
 
 void POST_Handler::set_changed_parameters(const vector<string> &input, string &name, int &year, int &length,
- 								double &price,	string &summary, string &director)
+			double &price,	string &summary, string &director)
 {
 	if(find(input.begin(), input.end(), NAME) != input.end())
     	name =  get_parameter(input, NAME);
@@ -311,19 +311,25 @@ void POST_Handler::set_changed_parameters(const vector<string> &input, string &n
 	    director =  get_parameter(input, DIRECTOR);
 }
 
-void POST_Handler::handle_editing_film(const vector<string> &input)
+void POST_Handler::apply_editing_film(const vector<string> &input)
 {
- 	string name;
+	string name;
     int year=0 ;
     int length=0;
     double price=0;
     string summary;
     string director;
+
+	int film_id =  get_film_id(input);
+	set_changed_parameters(input, name, year, length, price, summary, director);
+    Netflix::get_instance() -> edit_film(film_id, name, year, length, price, summary, director);
+
+}
+void POST_Handler::handle_editing_film(const vector<string> &input)
+{
 	try
 	{
-		int film_id =  get_film_id(input);
-		set_changed_parameters(input, name, year, length, price, summary, director);
-	    Netflix::get_instance() -> edit_film(film_id, name, year, length, price, summary, director);
+		apply_editing_film(input);
     }
     catch(const Exception &e)
     {

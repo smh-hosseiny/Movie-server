@@ -3,6 +3,15 @@
 #include <algorithm>
 #include <iostream>
 
+#define LIST_OF_FOLLOWER "List of Followers"
+#define PUBLISHER "Publisher"
+#define SEPERATOR " | "
+#define SHARP_SIGN "#. "
+#define DOT_SPACE ". "
+#define USER_ID "User Id"
+#define USER_USERNAME "User Username"
+#define USER_EMAIL "User Email"
+
 using namespace std;
 
 
@@ -12,7 +21,7 @@ Publisher::Publisher(string user_name, string pass, string e_mail, int Age, int 
 
 string Publisher::get_membership_type()
 {
-	return "Publisher";
+	return PUBLISHER;
 }
 
 
@@ -28,8 +37,8 @@ void Publisher::print_followers()
 	int i = 1;
 	for(auto &elem : followers)
 	{
-		cout << i << ". " << elem.first << " | " << elem.second-> get_username() 
-		<< " | " << elem.second-> get_email() << endl;
+		cout << i << DOT_SPACE << elem.first << SEPERATOR << elem.second-> get_username() 
+		<< SEPERATOR << elem.second-> get_email() << endl;
 		i++;
 	}
 }
@@ -37,8 +46,8 @@ void Publisher::print_followers()
 
 void Publisher::show_followers()
 {
-	cout << "List of Followers\n";
-	cout << "#. User Id | User Username | User Email" << endl;
+	cout << LIST_OF_FOLLOWER << endl;
+	cout << SHARP_SIGN << USER_ID << SEPERATOR << USER_USERNAME << SEPERATOR << USER_EMAIL << endl;
 	if(followers.size() > 0)
 		print_followers();
 }
@@ -69,7 +78,7 @@ int Publisher::get_movie_sale_income()
 }
 
 
-void Publisher::recieve_money()
+void Publisher::recieve_your_money()
 {
 	movie_sale_income += blocked_income;
 	blocked_income = 0;

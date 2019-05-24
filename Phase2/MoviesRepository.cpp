@@ -138,10 +138,9 @@ void MoviesRepository::ignore_members_own_films(vector<shared_ptr<Movie> > &movi
 vector<shared_ptr<Movie> > MoviesRepository::find_movies_by_id(vector<int> movies_ids)
 {
 	vector<shared_ptr<Movie> > movies;
-	for(auto &elem : all_movies)
+	for(auto &elem : movies_ids)
 	{
-		if(find(movies_ids.begin(), movies_ids.end(), elem->get_id()) != movies_ids.end())
-			movies.push_back(elem);
+		movies.push_back(get_movie(elem));
 	}
 	return movies;
 }
@@ -164,7 +163,6 @@ vector<int> MoviesRepository::recommend_based_on_graph(vector<int> users_movies_
 
 vector<shared_ptr<Movie> > MoviesRepository::get_recommended_movies(int film_id, shared_ptr<Member> member)
 {
-	vector<shared_ptr<Movie> > movies = all_movies;
 	vector<int> users_purchased_movies = member -> get_purchased_movies_ids();
 	return send_recommendations(users_purchased_movies, film_id);
 }

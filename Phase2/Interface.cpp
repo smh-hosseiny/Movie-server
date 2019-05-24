@@ -11,6 +11,7 @@
 #include "Admin.h"
 
 #define POST "POST"
+#define EMPTY ""
 #define PUT "PUT"
 #define GET "GET"
 #define DELETE "DELETE"
@@ -34,7 +35,7 @@ void Interface::run_netflix()
 	string command;
 	while(getline(cin, command,'\n'))
 	{
-		if(command != "")
+		if(command != EMPTY)
 			handle_input(split(command));
 	}   
 }
@@ -46,7 +47,8 @@ vector<string> Interface::split(string input)
     string token={};
     stringstream tokenStream(input);
     while (getline(tokenStream, token,' '))
-        splited.push_back(token); 
+        splited.push_back(token);
+    splited.erase(remove(splited.begin(), splited.end(), EMPTY), splited.end()); 
     return splited;
 }
 
@@ -57,9 +59,7 @@ void Interface::handle_input(const vector<string> &input)
     try
     {
     	if(Netflix::get_instance() -> is_loggedin_user(input))
-        {
     		handle_command(input);
-        }
     }
 
     catch(const Exception &e)
@@ -68,23 +68,26 @@ void Interface::handle_input(const vector<string> &input)
     }
 }
 
+void Interface::identify_command(const vector<string> &command)
+{
+    if(command[0] == POST)
+        POST_Handler::get_instance() -> handle(command);
+
+    else if(command[0] == GET)
+        GET_Handler::get_instance() -> handle(command);
+
+    else
+        throw BadRequest();
+}
+
+
 void Interface::handle_command(const vector<string> &command)
 {
     if(handle_if_is_admin(command))
         return;
     try
     {
-        if(command[0] == POST)
-        {
-            POST_Handler::get_instance() -> handle(command);
-        }             
-
-        else if(command[0] == GET)
-        {
-            GET_Handler::get_instance() -> handle(command);
-        } 
-        else
-            throw BadRequest();
+        identify_command(command);
     }
     catch(const Exception &e)
     {
@@ -103,20 +106,23 @@ bool Interface::handle_if_is_admin(const std::vector<std::string> &command)
     return false;
 }
 
+void Interface::identify_admin_command(const vector<string> &command)
+{
+    if(command[0] == GET && command[1] == MONEY && command.size() == 2)
+        Netflix::get_instance() -> handle_admin_request();
+
+    else if(command[0] == POST && command[1] == LOG_OUT && command.size() == 2) 
+        Netflix::get_instance() -> log_out_admin();
+
+    else
+        throw BadRequest();
+}
+
 void Interface::handle_admin_command(const vector<string> &command)
 {
     try
     {
-        if(command[0] == GET && command[1] == MONEY && command.size() == 2)
-        {
-            Netflix::get_instance() -> handle_admin_request();
-        }
-        else if(command[0] == POST && command[1] == LOG_OUT && command.size() == 2) 
-        {
-            Netflix::get_instance() -> log_out_admin();
-        }            
-        else
-            throw BadRequest();
+        identify_admin_command(command);
     }
     catch(const Exception &e)
     {

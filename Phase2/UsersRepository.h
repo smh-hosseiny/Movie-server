@@ -12,7 +12,7 @@ class UsersRepository
 public:
    static std::shared_ptr<UsersRepository> get_instance();
 
-   bool validate_username(std::string user_name);
+   bool is_username_valid(std::string user_name);
 
    std::string Hash(std::string password);
 

@@ -18,7 +18,7 @@ public:
 	void show_followers();
 	void earn_money(std::shared_ptr<Movie> movie);
 	int clculate_income(int price_of_movie, double rate);
-	void recieve_money();
+	void recieve_your_money();
 	int get_movie_sale_income();
 	void print_followers();
 

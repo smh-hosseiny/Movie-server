@@ -1,53 +1,53 @@
-POST films ? name film1 year 1999 length 120 price 10000 summary summary|of|film1 director director_of_film1
-
+POST films ? name   film1 year 1999 length 120 price 10000 summary summary|of|film1 director director_of_film1
+POST logout
 POST signup ? username pub password 123 email pub@gmail.com age 20 publisher true
-POST films ? name film1 year 1999 length 120 price 10000 summary summary|of|film1 director director_of_film1
-GET published
-
-POST signup ? username customer password 123 email user@gmail.com age 20
+PUT
+POST films ? name film0 year 1999 length 120 price 1000 summary summary|of|film1 director director_of_film1
 GET films
 DELETE films ? film_id 1
 
 POST login ? username pub password 122
 POST login ? username pub password 123
 
-POST films ? name film2 year 2000 length 120 price 20000 summary summary|of|film2
-POST films ? nam  film2 year 2000 length 120 price 20000 summary summary|of|film2 director director_of_film2
-POST films ? name film2 year 2000 length 120 price 20000 summary summary|of|film2 director director_of_film2
-POST films ? name film3 year 2001 length 120 price 30000 summary summary|of|film3 director director_of_film3
-GET published
-PUT films ? film_id 2 name the_second_film
+POST films ? name film1 year 2000 length 120 price 2000 summary summary|of|film2 director director_of_film2
+POST films ? name film2 year 2000 length 120 price 2000 summary summary|of|film2 director director_of_film2
+POST films ? name film3 year 2001 length 120 price 3000 summary summary|of|film3 director director_of_film3
 GET published
 DELETE films ? film_id 1
-GET followers
-
-POST login ? username customer password 123
-GET purchased
+POST logout
+POST signup ? username pub2 password 456 email pub@gmail.com age 20 publisher true
+POST films ? name film4 year 2000 length 120 price 20000 summary summary|of|film2 director director_of_film2
+POST films ? name film5 year 2001 length 120 price 30000 summary summary|of|film3 director director_of_film3
+GET published
+POST logout
+POST signup ? username customer password 123 email user@gmail.com age 20
 POST money ? amount 999999
-POST followers ? user_id 1
-GET films
-GET films ? film_id 1
-GET films ? film_id 2
 POST buy ? film_id 2
 POST buy ? film_id 1
-POST rate ? film_id 3 score 10
-POST rate ? film_id 2 score 10
+POST rate ? film_id 4 score 10
+POST rate ? film_id 2 score 9
 POST comments ? film_id 2 content perfeeeect.
 POST comments ? film_id 2 content Perfection
 GET purchased
+POST logout
 
+POST signup ? username customer2 password 123 email user@gmail.com age 20
+POST money ? amount 999999
+POST buy ? film_id 2
+POST buy ? film_id 3
+POST buy ? film_id 4
+POST rate ? film_id 3 score 7
+POST rate ? film_id 2 score 9
+POST rate ? film_id 2 score 1
+GET purchased
+POST logout
 POST login ? username pub password 123
-GET notifications
-GET followers
-DELETE comments ? film_id 1 comment_id 1
-DELETE comments ? film_id 2 comment_id 1
-POST replies ? film_id 2 comment_id 2 content Tnx
+POST replies ? film_id 2 comment_id 2 content Soltani
 POST money
-GET notifications
-
-POST login ? username customer password 123
-GET notifications
 POST logout
 POST login ? username admin password admin
 GET money
 POST logout
+POST login ? username customer password 123
+GET films
+GET films ? film_id 2

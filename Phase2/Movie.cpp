@@ -99,7 +99,7 @@ void Movie::set_score(int score, const string username)
 void Movie::update_rate(const string username)
 {
 	double num_of_scores = scores.size();
-	int sum_of_scores = 0;
+	int sum_of_scores = rate * (num_of_scores-1);
 	sum_of_scores += scores.at(username);
 	rate = sum_of_scores/num_of_scores;
 }
@@ -164,7 +164,7 @@ void Movie::display_comments()
 {
 	for(auto &elem : comments)
 	{
-		cout << elem->get_id() << elem->get_content() << endl;
+		cout << elem->get_id() << ". " << elem->get_content() << endl;
 		elem -> get_replies();
 	}
 	cout << endl;

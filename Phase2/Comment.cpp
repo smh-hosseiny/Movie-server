@@ -36,6 +36,6 @@ void Comment::get_replies()
 {
 	for(int i=0; i<reply.size(); i++)
 	{
-		cout << id << "." << i+1 << " " << reply[i] << endl;
+		cout << id << "." << i+1 << ". " << reply[i] << endl;
 	}
 }

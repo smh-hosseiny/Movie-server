@@ -1,64 +1,32 @@
 Permission Denied
+Bad Request
 OK
+Bad Request
 OK
 #. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-Bad Request
-#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-Bad Request
-Bad Request
+1. 1 | film0 | 120 | 1000 | 0 | 1999 | director_of_film1
 Bad Request
 Bad Request
 Bad Request
 OK
 OK
+OK
 #. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-2. 2 | film2 | 120 | 20000 | 0 | 2000 | director_of_film2
-3. 3 | film3 | 120 | 30000 | 0 | 2001 | director_of_film3
+1. 1 | film0 | 120 | 1000 | 0 | 1999 | director_of_film1
+2. 2 | film1 | 120 | 2000 | 0 | 2000 | director_of_film2
+3. 3 | film2 | 120 | 2000 | 0 | 2000 | director_of_film2
+4. 4 | film3 | 120 | 3000 | 0 | 2001 | director_of_film3
 Bad Request
-#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-2. 2 | film2 | 120 | 20000 | 0 | 2000 | director_of_film2
-3. 3 | film3 | 120 | 30000 | 0 | 2001 | director_of_film3
-Bad Request
-List of Followers
-#. User Id | User Username | User Email
-Bad Request
-#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
+OK
+OK
 OK
 OK
 #. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-2. 2 | film2 | 120 | 20000 | 0 | 2000 | director_of_film2
-3. 3 | film3 | 120 | 30000 | 0 | 2001 | director_of_film3
-Details of Film film1
-Id = 1
-Director = director_of_film1
-Length = 120
-Year = 1999
-Summary = summary|of|film1
-Rate = 0
-Price = 10000
-
-Comments
-
-Recommendation Film
-#. Film Id | Film Name | Film Length | Film Director
-Details of Film film2
-Id = 2
-Director = director_of_film2
-Length = 120
-Year = 2000
-Summary = summary|of|film2
-Rate = 0
-Price = 20000
-
-Comments
-
-Recommendation Film
-#. Film Id | Film Name | Film Length | Film Director
+1. 5 | film4 | 120 | 20000 | 0 | 2000 | director_of_film2
+2. 6 | film5 | 120 | 30000 | 0 | 2001 | director_of_film3
+OK
+OK
+OK
 OK
 OK
 Permission Denied
@@ -66,34 +34,55 @@ OK
 OK
 OK
 #. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
-1. 2 | film2 | 120 | 20000 | 10 | 2000 | director_of_film2
-2. 1 | film1 | 120 | 10000 | 0 | 1999 | director_of_film1
-Bad Request
-#. Notification Message
-1. User pub with id 1 comment on your film film2 with id 2.
-2. User pub with id 1 comment on your film film2 with id 2.
-3. User pub with id 1 rate your film film2 with id 2.
-4. User pub with id 1 buy your film film1 with id 1.
-5. User pub with id 1 buy your film film2 with id 2.
-6. User pub with id 1 follow you.
-List of Followers
-#. User Id | User Username | User Email
-1. 1 | pub | pub@gmail.com
-Bad Request
-Bad Request
+1. 2 | film1 | 120 | 2000 | 9 | 2000 | director_of_film2
+2. 1 | film0 | 120 | 1000 | 0 | 1999 | director_of_film1
 OK
 OK
-#. Notification Message
-1. Publisher pub with id 1 reply to your comment.
-Bad Request
-#. Notification Message
 OK
 OK
-30000
 OK
-the Graph : 
-0 1 0 
-1 0 0 
-0 0 0 
+OK
+OK
+OK
+OK
+#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
+1. 2 | film1 | 120 | 2000 | 5 | 2000 | director_of_film2
+2. 3 | film2 | 120 | 2000 | 7 | 2000 | director_of_film2
+3. 4 | film3 | 120 | 3000 | 0 | 2001 | director_of_film3
+OK
+OK
+OK
+OK
+OK
+OK
+900
+OK
+OK
+#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director
+1. 1 | film0 | 120 | 1000 | 0 | 1999 | director_of_film1
+2. 2 | film1 | 120 | 2000 | 5 | 2000 | director_of_film2
+3. 3 | film2 | 120 | 2000 | 7 | 2000 | director_of_film2
+4. 4 | film3 | 120 | 3000 | 0 | 2001 | director_of_film3
+5. 5 | film4 | 120 | 20000 | 0 | 2000 | director_of_film2
+6. 6 | film5 | 120 | 30000 | 0 | 2001 | director_of_film3
+Details of Film film1
+Id = 2
+Director = director_of_film2
+Length = 120
+Year = 2000
+Summary = summary|of|film2
+Rate = 5
+Price = 2000
 
+Comments
+1. perfeeeect.
+2. Perfection
+2.1. Soltani
+
+Recommendation Film
+#. Film Id | Film Name | Film Length | Film Director
+1. 3 | film2 | 120 | director_of_film2
+2. 4 | film3 | 120 | director_of_film3
+3. 5 | film4 | 120 | director_of_film2
+4. 6 | film5 | 120 | director_of_film3
 

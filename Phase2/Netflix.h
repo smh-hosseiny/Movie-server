@@ -36,12 +36,14 @@ public:
   bool is_publisher();
 
   void recieve_money();
+  void handle_recieve_money();
 
   void set_current_user(std::shared_ptr<Member> user);
 
   std::shared_ptr<Member> get_current_user();
 
   void follow(int user_id);
+  void handle_follow(int user_id);
 
   void get_followers();
 
@@ -69,14 +71,19 @@ public:
   void remove_film(int film_id);
 
   void buy_film(int film_id);
+  void handle_buy_film(std::shared_ptr<Movie> movie);
 
   void rate_film(int film_id, int score);
+  void handle_rate_film(std::shared_ptr<Movie> movie, int film_id, int score);
 
   void comment_film(int film_id, const std::string &content);
+  void handle_comment_film(std::shared_ptr<Movie> movie, int film_id, const std::string &content);
 
   void delete_comment(int film_id, int content_id);
+  void handle_delete_comment(int film_id, int comment_id);
 
   void reply_to_film_comments(int film_id, int comment_id, const std::string &content);
+  void handle_reply_to_comments(int film_id, int comment_id, const std::string &content);
 
   void get_members_money();
 
