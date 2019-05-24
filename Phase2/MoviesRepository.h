@@ -32,6 +32,9 @@ public:
 
 	void show_this_film(int film_id, std::shared_ptr<Member> member);
 
+	void display_comments_and_recommendations(int film_id, std::shared_ptr<Member> member);
+
+
 	void ignore_members_own_films(std::vector<std::shared_ptr<Movie> > &movies, 
 	const std::vector<std::shared_ptr<Movie> > &members_movies);
 
@@ -44,10 +47,15 @@ public:
 	std::vector<std::shared_ptr<Movie> > find_movies_by_id(std::vector<int> movies_ids);
 
 	void display_recommendation(std::vector<std::shared_ptr<Movie> > movies);
+	void display(std::vector<std::shared_ptr<Movie> > movies);
 
 
 	static std::vector<std::shared_ptr<Movie> > filter(std::vector<std::shared_ptr<Movie> > all_movies_of_publisher, 
 	const std::string &name, int min_year, int max_year, double min_rate, double price, const std::string &director);
+
+	static bool apply_filter(std::shared_ptr<Movie> movie_of_publisher, const std::string &name, int min_year,
+	 int max_year, double min_rate, double price, const std::string &director);
+
 	static bool apply_director_filter(std::shared_ptr<Movie> movie, const std::string &director);
 
  	static bool apply_name_filter(std::shared_ptr<Movie> movie, const std::string name);
@@ -62,6 +70,7 @@ public:
 
 
 	static void display_films_info(std::vector<std::shared_ptr<Movie> > movies);
+	static void display_info(std::vector<std::shared_ptr<Movie> > movies);
 
 	void remove_movie(int film_id);
 

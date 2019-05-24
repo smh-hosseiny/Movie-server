@@ -35,6 +35,7 @@ public:
 	void set_reply_to_comment(int comment_id, const std::string &content, const std::string name_of_movie,
 	const std::shared_ptr<Member> publisher);
 	void remove_comment(int comment_id);
+	void handle_remove_comment(int comment_id);
 	void display_comments();
 
 private:

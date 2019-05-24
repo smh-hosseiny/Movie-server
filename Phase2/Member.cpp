@@ -78,19 +78,36 @@ void Member::recieve_notification(string message)
 }
 
 
+void Member::display_unread_messages()
+{
+	for(int i=0; i<unread_messages.size(); i++)
+	{
+		cout << i+1 <<". "<< unread_messages[unread_messages.size()-i-1] << "." <<endl;
+		read_messages.push_back(unread_messages[i]);
+	}
+}
+
+
 void Member::get_unread_messages()
 {
 	cout << "#. Notification Message\n";
 	if(unread_messages.size() > 0)
 	{
-		for(int i=0; i<unread_messages.size(); i++)
-		{
-			cout << i+1 <<". "<< unread_messages[unread_messages.size()-i-1] << "." <<endl;
-			read_messages.push_back(unread_messages[i]);
-		}
+		display_unread_messages();
 		unread_messages.clear();
 	}
 }
+
+
+void Member::display_read_messages(int number_of_messages_to_display)
+{
+	if(read_messages.size() > 0)
+	{
+		for(int i=0; i<number_of_messages_to_display; i++)
+			cout << i+1 <<". "<< read_messages[read_messages.size()-i-1] << endl;
+	}
+}
+
 
 
 void Member::get_read_messages(int limit)
@@ -100,13 +117,7 @@ void Member::get_read_messages(int limit)
 	(limit <= number_of_read_messages) ? number_of_messages_to_display= limit : 
 						number_of_messages_to_display= number_of_read_messages;
 	cout << "#. Notification Message\n";
-	if(read_messages.size() > 0)
-	{
-		for(int i=0; i<number_of_messages_to_display; i++)
-		{
-			cout << i+1 <<". "<< read_messages[read_messages.size()-i-1] << endl;
-		}
-	}
+	display_read_messages(number_of_messages_to_display);
 }
 
 

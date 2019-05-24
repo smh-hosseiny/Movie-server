@@ -22,7 +22,9 @@ public:
 	bool follow_publisher(std::shared_ptr<Member> publisher);
 	void recieve_notification(std::string message);
 	void get_unread_messages();
+	void display_unread_messages();
 	void get_read_messages(int limit);
+	void display_read_messages(int number_of_messages_to_display);
 	void buy_film(std::shared_ptr<Movie> movie);
 	void display_purchased_films(const std::string &name, double price, int min_year,
 	int max_year, const std::string &director);

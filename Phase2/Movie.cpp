@@ -140,25 +140,32 @@ void Movie::set_reply_to_comment(int comment_id, const string &content, const st
 }
 
 
-void Movie:: remove_comment(int comment_id)
+void Movie::handle_remove_comment(int comment_id)
+{
+	for(auto &elem : comments)
+	{
+		if(elem -> get_id() == comment_id)
+		{
+			comments.erase(find(comments.begin(), comments.end(), elem));
+			return;
+		}
+	}
+	throw NotFound();
+}
+
+
+void Movie::remove_comment(int comment_id)
 {
 	try
 	{
-		for(auto &elem : comments)
-		{
-			if(elem -> get_id() == comment_id)
-			{
-				comments.erase(find(comments.begin(), comments.end(), elem));
-				return;
-			}
-		}
-		throw NotFound();
+		handle_remove_comment(comment_id);
 	}
 	catch(const Exception &e)
 	{
 		throw;
 	}
 }
+
 
 void Movie::display_comments()
 {

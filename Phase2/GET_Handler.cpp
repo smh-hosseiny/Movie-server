@@ -52,7 +52,7 @@ void GET_Handler::handle(const vector<string> &command)
         handle_showing_purchased_films(command);
     }
 
-    else if(command[1] == FOLLOWERS)
+    else if(command[1] == FOLLOWERS  && command.size() == 2)
     {
         handle_displaying_followers();
     }

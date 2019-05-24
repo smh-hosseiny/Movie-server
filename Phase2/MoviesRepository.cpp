@@ -107,6 +107,17 @@ vector<shared_ptr<Movie> > MoviesRepository::get_movies_of_publisher(shared_ptr<
 	return movies;
 }
 
+void MoviesRepository::display_info(vector<shared_ptr<Movie> > movies)
+{
+	for(int i=0; i<movies.size(); i++)
+ 	{
+ 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
+ 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
+ 		movies[i]->get_price() << SEPERATOR << setprecision(8) << movies[i]->get_rate() << 
+ 		SEPERATOR << movies[i]->get_year() << SEPERATOR << movies[i]->get_director() << endl;
+ 	}
+}
+
 
 void MoviesRepository::display_films_info(vector<shared_ptr<Movie> > movies)
 {
@@ -116,13 +127,7 @@ void MoviesRepository::display_films_info(vector<shared_ptr<Movie> > movies)
 							
  	if(movies.size() == 0)
 		return;
- 	for(int i=0; i<movies.size(); i++)
- 	{
- 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
- 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
- 		movies[i]->get_price() << SEPERATOR << setprecision(8) << movies[i]->get_rate() << 
- 		SEPERATOR << movies[i]->get_year() << SEPERATOR << movies[i]->get_director() << endl;
- 	}
+	display_info(movies); 	
 }
 
 void MoviesRepository::ignore_members_own_films(vector<shared_ptr<Movie> > &movies, 
@@ -168,6 +173,17 @@ vector<shared_ptr<Movie> > MoviesRepository::get_recommended_movies(int film_id,
 }
 
 
+void MoviesRepository::display_comments_and_recommendations(int film_id, shared_ptr<Member> member)
+{
+	shared_ptr<Movie> movie = get_movie(film_id);
+	cout << endl << COMMENTS << endl;
+	movie-> display_comments();
+
+	vector<shared_ptr<Movie> > top_movies = get_recommended_movies(film_id, member);
+	display_recommendation(top_movies);
+}
+
+
 void MoviesRepository::show_this_film(int film_id, shared_ptr<Member> member)
 {
 	shared_ptr<Movie> movie = get_movie(film_id);
@@ -180,12 +196,20 @@ void MoviesRepository::show_this_film(int film_id, shared_ptr<Member> member)
 	cout << RATE << IS << movie->get_rate() << endl;
 	cout << PRICE << IS << movie->get_price() << endl;
 
-	cout << endl << COMMENTS << endl;
-	movie-> display_comments();
-
-	vector<shared_ptr<Movie> > top_movies = get_recommended_movies(film_id, member);
-	display_recommendation(top_movies);
+	display_comments_and_recommendations(film_id, member);
 }
+
+
+void MoviesRepository::display(vector<shared_ptr<Movie> > movies)
+{
+	for(int i=0; i<movies.size(); i++)
+ 	{
+ 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
+ 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
+		movies[i]->get_director() << endl;
+ 	}
+}
+
 
 
 void MoviesRepository::display_recommendation(vector<shared_ptr<Movie> > movies)
@@ -195,12 +219,8 @@ void MoviesRepository::display_recommendation(vector<shared_ptr<Movie> > movies)
 	SEPERATOR << FILM_DIRECTOR << endl;
 	if(movies.size() == 0)
 		return;
- 	for(int i=0; i<movies.size(); i++)
- 	{
- 		cout << i+1 << ". " << movies[i]->get_id() << SEPERATOR << 
- 		movies[i]->get_name() << SEPERATOR << movies[i]->get_length() << SEPERATOR <<
-		movies[i]->get_director() << endl;
- 	}
+	display(movies);
+ 	
 }
 
 
@@ -272,18 +292,24 @@ bool MoviesRepository::apply_director_filter(shared_ptr<Movie> movie, const stri
 	return true;
 }
 
+
+bool MoviesRepository::apply_filter(shared_ptr<Movie> movie_of_publisher, 
+	const string &name, int min_year, int max_year, double min_rate, double price, const string &director)
+{
+	return ((apply_name_filter(movie_of_publisher, name) && apply_min_year_filter(movie_of_publisher, min_year) &&
+	apply_max_year_filter(movie_of_publisher, max_year) && apply_min_rate_filter(movie_of_publisher, min_rate) &&
+	apply_price_filter(movie_of_publisher, price) && apply_director_filter(movie_of_publisher, director)));
+}
+
+
 vector<shared_ptr<Movie> > MoviesRepository::filter(vector<shared_ptr<Movie> > all_movies_of_publisher, 
 	const string &name, int min_year, int max_year, double min_rate, double price, const string &director)
 {
 	vector<shared_ptr<Movie> > filtered_movies;
 	for(auto &elem : all_movies_of_publisher)
 	{
-		if((apply_name_filter(elem, name) && apply_min_year_filter(elem, min_year) &&
-		apply_max_year_filter(elem, max_year) && apply_min_rate_filter(elem, min_rate) &&
-		apply_price_filter(elem, price) && apply_director_filter(elem, director)))
-		{
+		if(apply_filter(elem, name, min_year, max_year, min_rate, price, director));
 			filtered_movies.push_back(elem);
-		}
 	}
 	return filtered_movies;
 }

@@ -35,6 +35,7 @@ int Command_Handler::get_film_id(const vector<string> &input)
 	return film_id;
 }
 
+
 bool Command_Handler::is_publisher(const vector<string> &input)
 {
     bool publisher;
