@@ -23,13 +23,14 @@ public:
 	std::vector<int> recommend_movie(std::vector<int> users_movies_ids, int film_id);
 
 	std::vector<std::pair<int,int>> sort_by_weight(std::map<int,int> map);
-	std::vector<int> set_recommended_movies_ids(std::vector<std::pair<int,int>> Id_and_weight);
-	std::vector<int> form_recommended_movies_ids_list(std::vector<std::pair<int,int>> Id_and_weight);
+	std::vector<int> set_recommended_movies_index(std::vector<std::pair<int,int>> Id_and_weight);
+	std::vector<int> form_recommended_movies_index_list(std::vector<std::pair<int,int>> Id_and_weight);
+
+	void remove_node(int film_id);
 
 private:
 	std::vector<std::vector<int> > graph;
 	void set_new_graph(std::vector<std::vector<int> > &new_graph);
-
 };
 
 #endif

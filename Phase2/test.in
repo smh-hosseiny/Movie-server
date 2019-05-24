@@ -45,9 +45,17 @@ POST login ? username pub password 123
 POST replies ? film_id 2 comment_id 2 content Soltani
 POST money
 POST logout
-POST login ? username admin password admin
-GET money
+POST login ? username customer password 123
+GET films
+GET films ? film_id 2
+POST logout
+POST login ? username pub2 password 456
+POST delete_films ? film_id 5
 POST logout
 POST login ? username customer password 123
 GET films
 GET films ? film_id 2
+POST logout
+POST login ? username admin password admin
+GET money
+POST logout

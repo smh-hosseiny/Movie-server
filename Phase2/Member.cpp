@@ -127,7 +127,11 @@ void Member::buy_film(shared_ptr<Movie> movie)
 	{
 		if(movie->get_price() > account)
 			throw PermissionDenied();
-		my_movies.push_back(movie);
+		if(find(my_movies.begin(), my_movies.end(), movie) == my_movies.end())
+		{
+			my_movies.push_back(movie);
+			account -= movie->get_price();
+		}
 	}
 	catch(const Exception &e)
 	{

@@ -140,12 +140,12 @@ void MoviesRepository::ignore_members_own_films(vector<shared_ptr<Movie> > &movi
 	}
 }
 
-vector<shared_ptr<Movie> > MoviesRepository::find_movies_by_id(vector<int> movies_ids)
+vector<shared_ptr<Movie> > MoviesRepository::find_movies_by_index(vector<int> movies_ids)
 {
 	vector<shared_ptr<Movie> > movies;
 	for(auto &elem : movies_ids)
 	{
-		movies.push_back(get_movie(elem));
+		movies.push_back(all_movies[elem]);
 	}
 	return movies;
 }
@@ -154,8 +154,8 @@ vector<shared_ptr<Movie> > MoviesRepository::find_movies_by_id(vector<int> movie
 vector<shared_ptr<Movie> > MoviesRepository::send_recommendations(vector<int> users_movies_ids, int film_id)
 {
 	vector<shared_ptr<Movie> > recommended_movies;
-	vector<int> recommended_movies_ids = recommend_based_on_graph(users_movies_ids, film_id);
-	recommended_movies = find_movies_by_id(recommended_movies_ids);
+	vector<int> recommended_movies_index = recommend_based_on_graph(users_movies_ids, film_id);
+	recommended_movies = find_movies_by_index(recommended_movies_index);
 	return recommended_movies;
 }
 
@@ -320,6 +320,7 @@ void MoviesRepository:: remove_movie(int film_id)
 	try
 	{
 		all_movies.erase(find(all_movies.begin(), all_movies.end(), get_movie(film_id)));
+		movie_graph->remove_node(film_id);
 	}
 	catch(const Exception &e)
 	{

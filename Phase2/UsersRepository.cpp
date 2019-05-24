@@ -33,7 +33,7 @@ bool UsersRepository::is_username_valid(string user_name)
 bool UsersRepository::is_email_valid(const std::string& email)
 {
    const regex pattern ("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
-   return std::regex_match(email, pattern);
+   return regex_match(email, pattern);
 }
 
 

@@ -44,7 +44,7 @@ public:
 
 	std::vector<int> recommend_based_on_graph(std::vector<int> users_movies_ids, int film_id);
 
-	std::vector<std::shared_ptr<Movie> > find_movies_by_id(std::vector<int> movies_ids);
+	std::vector<std::shared_ptr<Movie> > find_movies_by_index(std::vector<int> movies_ids);
 
 	void display_recommendation(std::vector<std::shared_ptr<Movie> > movies);
 	void display(std::vector<std::shared_ptr<Movie> > movies);

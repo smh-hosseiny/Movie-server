@@ -18,8 +18,6 @@
 #define USER "User "
 #define WITH_ID " with Id "
 
-
-
 using namespace std;
 
 shared_ptr<Netflix> Netflix::the_instance=0;

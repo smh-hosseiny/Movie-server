@@ -19,6 +19,17 @@ void MovieGraph::add_node()
 }
 
 
+void MovieGraph::remove_node(int film_id)
+{
+	graph.erase(graph.begin() + film_id);
+	for(auto &elem : graph)
+	{
+		elem.erase(elem.begin()+film_id);
+	}
+}
+
+
+
 void MovieGraph::set_new_graph(vector<vector<int> > &new_graph)
 {
 	for(int i=0; i<graph.size(); i++)
@@ -102,39 +113,39 @@ map<int,int> MovieGraph::get_not_purchased_movies(vector<int> users_movies_ids, 
 	return movies_weights;
 }
 
-vector<int> MovieGraph::form_recommended_movies_ids_list(vector<pair<int,int>> Id_and_weight)
+vector<int> MovieGraph::form_recommended_movies_index_list(vector<pair<int,int>> Id_and_weight)
 {
-	vector<int> recommend_movies_ids;
+	vector<int> recommended_movies_index;
 	for(auto &elem : Id_and_weight)
 	{
-		recommend_movies_ids.push_back(elem.first);
+		recommended_movies_index.push_back(elem.first -1);
 	}
-	return recommend_movies_ids;
+	return recommended_movies_index;
 }
 
 
-vector<int> MovieGraph::set_recommended_movies_ids(vector<pair<int,int>> Id_and_weight)
+vector<int> MovieGraph::set_recommended_movies_index(vector<pair<int,int>> Id_and_weight)
 {
-	vector<int> recommend_movies_ids = form_recommended_movies_ids_list(Id_and_weight);
-	if(recommend_movies_ids.size() > 4)
-		recommend_movies_ids.resize(4);
-	return recommend_movies_ids;
+	vector<int> recommended_movies_index = form_recommended_movies_index_list(Id_and_weight);
+	if(recommended_movies_index.size() > 4)
+		recommended_movies_index.resize(4);
+	return recommended_movies_index;
 }
 
 vector<int> MovieGraph::find_recommendation(map<int,int> movies_weights)
 {
 	vector<pair<int,int>> Id_and_weight = sort_by_weight(movies_weights);	
-	vector<int> recommend_movies;
-	recommend_movies = set_recommended_movies_ids(Id_and_weight);
-	return recommend_movies;
+	vector<int> recommended_movies;
+	recommended_movies = set_recommended_movies_index(Id_and_weight);
+	return recommended_movies;
 }
 
 
 vector<int> MovieGraph::recommend_movie(vector<int> users_movies_ids, int film_id)
 {
 	map<int,int> linked_ids = get_not_purchased_movies(users_movies_ids, film_id);
-	vector<int> recommend_movies = find_recommendation(linked_ids);
-	return recommend_movies;
+	vector<int> recommended_movies = find_recommendation(linked_ids);
+	return recommended_movies;
 }
 
 
