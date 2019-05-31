@@ -1,0 +1,54 @@
+<!-- <html>
+  <body style="text-align: center;">
+    <h1>NETFLIX</h1>
+    <nav class="w3-bar w3-black">
+      <a href="/login" class="w3-button w3-bar-item"> <p style=" margin: auto; margin-top: 100px; width: 94%;color: rgb(15,5,5);">login page </p> </a>
+      <a href="/signup" class="w3-button w3-bar-item"> <p style=" margin: auto; margin-top: 10px; width: 94%;color: rgb(15,5,5);">signup page </p> </a>
+    </nav>
+    <section>
+        <img src="netflix.png" style="width:10%;">
+        <img class="mySlides" src="img_band_la.jpg" style="width:100%">
+        <img class="mySlides" src="img_band_ny.jpg" style="width:100%">
+        <img class="mySlides" src="img_band_chicago.jpg" style="width:100%">
+      </section>
+  </body>
+</html> -->
+
+<html>
+<body>
+
+<!-- Navigation -->
+<nav class="w3-bar w3-black">
+  <a href="/signup" class="centered">Signup</a>
+  <a href="/login" class="centered">Login</a>
+</nav>
+
+<!-- Slide Show -->
+<section>
+  <img class="mySlides" src="img1.jpg" style="width:100%">
+  <img class="mySlides" src="img2.jpg" style="width:100%">
+  <img class="mySlides" src="img3.jpg" style="width:100%">
+</section>
+
+<script>
+// Automatic Slideshow - change image every 3 seconds
+var myIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  myIndex++;
+  if (myIndex > x.length) {myIndex = 1}
+  x[myIndex-1].style.display = "block";
+  setTimeout(carousel, 3000);
+}
+</script>
+
+</body>
+</html>
+
+
