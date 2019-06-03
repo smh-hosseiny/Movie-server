@@ -85,7 +85,7 @@ void Netflix::logout_member()
 	}
 	catch(const Exception &e)
 	{
-		cout << e.what();	
+		throw;		
 	}
 }
 
@@ -99,7 +99,7 @@ void Netflix::login_member(string username, string pass)
 	}
 	catch(const Exception &e)
 	{
-		cout << e.what();	
+		throw;	
 	}
 }
 

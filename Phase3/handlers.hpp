@@ -32,8 +32,40 @@ public:
   std::map<std::string, std::string> handle(Request *req);
 };
 
-std::vector<std::string> generate_signup_request(std::string username, std::string password, std::string email, std::string age, std::string publisher);
-std::string is_publisher(std::string publisher);
+class LogoutHandler : public RequestHandler {
+public:
+  Response *callback(Request *);
+};
+
+class ChargeAccountHandler : public RequestHandler {
+public:
+  Response *callback(Request *req);
+};
+
+class ChargeMoneyHandler : public RequestHandler {
+public:
+  Response *callback(Request *);
+};
+
+class MovieAddingHandler : public RequestHandler {
+public:
+  Response *callback(Request *);
+};
+
+class FilmAddingHandler : public RequestHandler {
+public:
+  Response *callback(Request *);
+};
+
+
+std::vector<std::string> generate_signup_request(std::string username, std::string password, 
+	std::string email, std::string age, std::string publisher);
+std::vector<std::string> generate_login_request(std::string username, std::string password);
+std::vector<std::string> generate_charge_account_request(std::string amount);
+std::vector<std::string> generate_logout_request();
+std::vector<std::string> generate_add_movie_request(std::string name, std::string director,
+ std::string summary, std::string length, std::string price, std::string year);
+std::string is_publisher_or_not(std::string publisher);
 
 
 #endif

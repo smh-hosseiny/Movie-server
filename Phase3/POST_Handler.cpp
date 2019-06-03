@@ -1,4 +1,5 @@
 #include "POST_Handler.h"
+#include "Netflix.h"
 
 using namespace std;
 
@@ -141,7 +142,7 @@ void POST_Handler::handle_login(const vector<string> &input)
 	{
 	   string username = get_parameter(input, USERNAME);
 	   string password = get_parameter(input, PASSWORD);
-	   check_if_there_is_no_logged_in_member();
+	   //check_if_there_is_no_logged_in_member();
 	   if(handle_if_its_admin(username, password))
 			return;
 	   Netflix :: get_instance() -> login_member(username, password);

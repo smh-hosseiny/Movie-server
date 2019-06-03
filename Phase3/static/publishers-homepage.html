@@ -1,0 +1,101 @@
+<<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.js">
+
+<style>
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+body{
+  background-image: url(background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: new times roman;
+}
+
+.btn-topright{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-topright:hover{
+   background: rgb(80,1,5);
+}
+
+
+.btn-toprightt{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-toprightt:hover{
+   background: rgb(80,1,5);
+}
+
+
+h1{
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 20px;
+  margin-top: 300px;
+  color: rgb(200,200,200)
+}
+
+
+</style>
+</head>
+
+<!-- <body>
+   <p><form action="/home" method="post" >
+        <button type="submit" class="topright1" >logou</button>
+      </form> </p>
+
+  <p><form action="/charge_account" method="post" >
+        <button type="submit" class="topright2" >charge account</button>
+      </form> </p> -->
+
+<body>
+  <div class = "container-fluid">
+     <img src="netflix_name.jpeg" class="rounded mx-auto d-block">
+       <div class="sticky-top">
+        <form action="/home" method="POST">
+          <button type="submit" class="btn btn-topright" >Logout</button>
+        </form>
+        <form action="/charge-account" method="POST" >
+          <button type="submit" class="btn btn-toprightt" >Charge account</button> 
+        </form>
+        <form action="/add-movie" method="POST" >
+          <button type="submit" class="btn btn-toprightt" >Add movie</button> 
+        </form>
+
+       </div>
+      <!-- <div class="col-md-3"> </div> -->
+    <div class = "fixed-bottom">
+     <h1> All rights reserved </h1>
+   </div>
+  </div>
+  
+ 
+</body>
+</html> 

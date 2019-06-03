@@ -22,6 +22,8 @@ shared_ptr<UsersRepository> UsersRepository :: get_instance()
 
 bool UsersRepository::is_username_valid(string user_name)
 {
+	if(all_members.empty())
+		return true;
 	for(auto &elem : all_members)
 	{
 		if(elem->get_username() == user_name)
@@ -40,9 +42,8 @@ bool UsersRepository::is_email_valid(const std::string& email)
 string UsersRepository::Hash(string password)
 {
 	unsigned int Hash;
-	unsigned int magic = stoi(password);
 	for(int i=0; i<password.length(); i++)
-		Hash = Hash ^ magic;
+		Hash = Hash ^ int(password[i]);
 	return to_string(Hash);
 }
 
@@ -50,7 +51,7 @@ string UsersRepository::Hash(string password)
 
 void UsersRepository :: add_member(string user_name, string pass, string e_mail, int age, bool publisher)
 {
-	if(is_username_valid(user_name) && is_email_valid(e_mail))
+	if(is_username_valid(user_name))
 	{
 		int user_id = all_members.size()+1;
 		if(publisher)

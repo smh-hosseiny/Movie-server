@@ -58,13 +58,13 @@ void Interface::handle_input(const vector<string> &input)
 {
     try
     {
-    	if(Netflix::get_instance() -> is_loggedin_user(input))
-    		handle_command(input);
+    	//if(Netflix::get_instance() -> is_loggedin_user(input))
+        handle_command(input);
     }
 
     catch(const Exception &e)
     {
-       cout << e.what();
+       throw;
     }
 }
 
@@ -77,6 +77,7 @@ void Interface::identify_command(const vector<string> &command)
         GET_Handler::get_instance() -> handle(command);
 
     else
+        
         throw BadRequest();
 }
 
@@ -128,4 +129,9 @@ void Interface::handle_admin_command(const vector<string> &command)
     {
         throw;
     }         
+}
+
+bool Interface::is_publisher()
+{
+    return Netflix::get_instance()->is_publisher();
 }

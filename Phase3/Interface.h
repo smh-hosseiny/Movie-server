@@ -20,6 +20,7 @@ public:
 	bool handle_if_is_admin(const std::vector<std::string> &command);
 	void handle_admin_command(const std::vector<std::string> &command);
 	void identify_admin_command(const std::vector<std::string> &command);
+	bool is_publisher();
 
 };
 

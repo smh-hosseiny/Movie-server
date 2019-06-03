@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.js">
+
+<style>
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+body{
+  background-image: url(add-movie.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: new times roman;
+}
+
+.signup-form{
+  text-align: center;
+  background: red;
+  color: white;
+  border: 50px;
+  border-radius: 30px;
+  margin-top: 20px;
+  display:block;     
+  font-size: 19px;
+  width: 250px;
+}
+
+.signup-form:hover{
+   background: rgb(61,20,12);
+}
+
+.name{
+  text-align: center;
+  background:#DEB887;
+  color: white;
+  border: 20px;
+  margin-top: 20px;
+  margin-left: 25px;
+  display:block;     
+  font-size: 19px;
+  width: 800px;
+}
+
+.name:hover{
+   background: #CD853F;
+}
+
+.btn-topright{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-topright:hover{
+   background: rgb(80,1,5);
+}
+
+
+.number{
+  text-align: center;
+  background:#DEB887;
+  color: white;
+  border: 20px;
+  margin-top: 20px;
+  margin-left: 325px;
+  display:block;     
+  font-size: 19px;
+  width: 200px;
+}
+
+.number:hover{
+  background: #CD853F;
+}
+
+.signup-btn{
+  text-align: center;
+  background: #8B4513;
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 50px;
+  margin-bottom: 5%;
+  margin-left: 325px;
+  display:block;     
+  font-size: 19px;
+  width: 200px;
+}
+
+.signup-btn:hover{
+   background: rgb(80,1,5);
+}
+
+
+.center{
+  margin: auto;
+  text-align: center;
+  background-image: url(add-movie.jpg);
+  color: white;
+  border: 50px;
+  border-radius: 30px;
+  margin-top: 20px;
+  display:block;     
+  font-size: 19px;
+  width: 850px;
+}
+
+
+
+h1{
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 2%;
+  color: black;
+}
+
+</style>
+</head>
+  <body>
+ 
+<div class = "container-fluid">
+  <div class="sticky-top">
+        <form action="/home" method="POST">
+          <button type="submit" class="btn btn-topright" >Logout</button>
+        </form>
+    </div>
+    <img src="netflix_name.jpeg" class="image-responsive rounded mx-auto d-block">
+    <form action="/add-film" method="POST" class="center">
+      <section class="row">
+        <div class="center">
+          <input name="name" type="text" placeholder="name of movie" class="name"  required>
+          <input name="summary" type="text" placeholder="summary of movie" class="name"  required>
+          <input name="director" type="text" placeholder="director of movie" class="name"  required>
+          <input name="length" type="number" placeholder="length of movie"  min="0" max="500" step="1" class="number" required>
+          <input name="price" type="number" placeholder="price of movie"  min="0" step="500" class="number" required>
+          <input name="year" type="number" placeholder="production year of movie"  min="1800" max="2019" step="1" value="2016" class="number" required>
+        
+          <button type="submit" class="btn signup-btn">Add movie</button>
+          <!-- <a href="/signup"> <div class="btn signup-btn">Signup</div></a> -->
+        </div>
+      </section>
+      </form>
+    <div class = "fixed-bottom">
+     <h1> All rights reserved </h1>
+   </div>
+  </div>
+ </body>
+</html>
+
