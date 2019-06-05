@@ -1,0 +1,221 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.js">
+
+<style>
+
+
+body{
+  background-image: url(background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: new times roman;
+}
+
+.btn-topright{
+  background: rgba(251,236,236,0.07);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-topright:hover{
+   background: rgb(80,1,5);
+}
+
+
+.btn-toprightt{
+  background: rgba(251,236,236,0.07);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-toprightt:hover{
+   background: rgba(107,56,56,0.73);
+}
+
+
+.card{
+  background: rgba(107,56,56,0.43);
+  color: white;
+  display:block;     
+  margin: auto;
+  width: auto;
+  font-size: 15px;
+}
+.card:hover{
+background :rgba(107,56,56,0.73);
+}
+
+.card-title{
+  text-align: center;
+  font-size: 23px;
+  margin-bottom: 10px;
+  color: rgb(200,200,200)
+}
+
+.card-text{
+  text-align: center;
+  margin-bottom: 5px;
+  margin-left: auto;
+  font-size: 15px;
+  color: white;
+}
+
+.card-link{
+  text-align: center;
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-left: auto;
+  display:block;    
+  font-size: 15px;
+}
+
+
+.header{
+  background: rgba(107,56,56,0.12);
+  color: white;
+  display:block;     
+  margin: auto;
+  width: auto;
+  margin-bottom: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card-link:hover{
+  background: rgba(107,56,56,0.93);
+}
+
+
+h1{
+  text-align: center;
+  font-size: 18px;
+  color: rgb(200,200,200);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+</style>
+</head>
+
+<body>
+  <div class = "container-fluid">
+    <div class="sticky-top">
+      <form action="/home" method="POST">
+        <button type="submit" class="btn btn-topright" >Logout</button>
+      </form>
+      <form action="/charge-account" method="POST" >
+        <button type="submit" class="btn btn-toprightt" >Charge account</button> 
+      </form>
+      <form action="/add-movie" method="POST" >
+        <button type="submit" class="btn btn-toprightt" >Add movie</button> 
+      </form>
+    </div>
+  
+
+
+<div class="row">
+  <div  class="col-lg-3 col-lg-offset-1 gauche">      
+    <h1 class="header"> published movies </h1> 
+      <%
+      if(stoi(context["number_of_published_movies"]) > 0)
+      {
+      %>
+        <% for(int i =0; i<stoi(context["number_of_published_movies"]); i++) { %>
+        <div class="card";>     
+          <h5 class="card-title"><% cout <<context["published_movies_name" + to_string(i)]; %></h5>
+            <p class="card-text"> director : <% cout <<context["published_movies_director" + to_string(i)]; %></p>
+            <p class="card-text"> year : <% cout <<stoi(context["published_movies_year" + to_string(i)]); %></p>
+            <p class="card-text"> rate : <% cout <<stod(context["published_movies_rate" + to_string(i)]); %></p>
+            <p class="card-text"> length : <% cout <<stoi(context["published_movies_length" + to_string(i)]); %></p>
+            <p class="card-text"> price : <% cout <<stod(context["published_movies_price" + to_string(i)]); %></p>
+            <form action="/movie-page" method="POST">
+              <button type="submit" class="card-link">Movie Page</button>
+              <input type="hidden" name="id" value= "<% cout << context["published_movies_film_id" + to_string(i)]; %>" >
+            </form>
+            <form action="/remove-movie" method="POST">
+              <button type="submit" class="card-link">Delete movie</button> 
+              <input type="hidden" name="film_id" value= "<% cout << context["published_movies_film_id" + to_string(i)]; %>">
+          </form>
+        </div>
+        <% } %>               
+      <% } %> 
+  <br>
+</div>
+
+
+<div  class="col-lg-3 col-lg-offset-1 gauche">      
+  <h1 class="header"> movies to buy </h1>        
+    <%
+      if(stoi(context["number_of_other_movies"]) > 0)
+      {
+      %>
+        <% for(int h =0; h<stoi(context["number_of_other_movies"]); h++) { %>
+          <div class="card";>    
+            <h5 class="card-title"><% cout <<context["other_movies_name" + to_string(h)]; %></h5>
+              <p class="card-text"> director : <% cout <<context["other_movies_director" + to_string(h)]; %></p>
+              <p class="card-text"> year : <% cout <<stoi(context["other_movies_year" + to_string(h)]); %></p>
+              <p class="card-text"> rate : <% cout <<stod(context["other_movies_rate" + to_string(h)]); %></p>
+              <p class="card-text"> length : <% cout <<stoi(context["other_movies_length" + to_string(h)]); %></p>
+              <p class="card-text"> price : <% cout <<stod(context["other_movies_price" + to_string(h)]); %></p>
+              <form action="/movie-page" method="POST">
+                <button type="submit" class="card-link">Movie Page</button>
+                <input type="hidden" name="id" value= "<% cout << context["other_movies_film_id" + to_string(h)]; %>" >
+              </form>
+        </div>
+      <% } %>               
+    <% } %> 
+  <br>
+</div>
+
+<div class="col-lg-3 corps">
+  <h1 class="header"> purchased movies </h1>
+    <%
+      if(stoi(context["number_of_purchased_movies"]) > 0)
+    {
+    %>
+      <% for(int j =0; j<stoi(context["number_of_purchased_movies"]); j++) { %>
+        <div class="card" ;>
+          <h5 class="card-title"><% cout <<context["purchased_movies_name" + to_string(j)]; %></h5>
+            <p class="card-text"> director : <% cout <<context["purchased_movies_director" + to_string(j)]; %></p>
+            <p class="card-text"> year : <% cout <<stoi(context["purchased_movies_year" + to_string(j)]); %></p>
+            <p class="card-text"> rate : <% cout <<stod(context["purchased_movies_rate" + to_string(j)]); %></p>
+            <p class="card-text"> length : <% cout <<stoi(context["purchased_movies_length" + to_string(j)]); %></p>
+            <p class="card-text"> price : <% cout <<stod(context["purchased_movies_price" + to_string(j)]); %></p>
+            <form action="/movie-page" method="POST">
+              <button type="submit" class="card-link">Movie Page</button>
+              <input type="hidden" name="id" value= "<% cout << context["purchased_movies_film_id" + to_string(j)]; %>" >
+            </form>
+        </div>
+      <% } %>               
+    <% } %> 
+    </div>
+  <br>
+</div>
+
+ 
+   
+</div>
+</div>
+
+
+</body>
+</html> 
+
