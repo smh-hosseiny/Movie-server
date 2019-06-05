@@ -319,8 +319,9 @@ void MoviesRepository:: remove_movie(int film_id)
 {
 	try
 	{
+		int pos = find(all_movies.begin(), all_movies.end(), get_movie(film_id)) - all_movies.begin();
 		all_movies.erase(find(all_movies.begin(), all_movies.end(), get_movie(film_id)));
-		movie_graph->remove_node(film_id);
+		movie_graph->remove_node(pos);
 	}
 	catch(const Exception &e)
 	{
@@ -341,3 +342,24 @@ void MoviesRepository::check_members_favorite_movies(vector<int> purchased_movie
 		movie_graph->set_weights(purchased_movies_id);
 	}
 }
+
+
+vector<shared_ptr<Movie> > MoviesRepository::get_other_movies(shared_ptr<Member> user)
+{
+	vector<shared_ptr<Movie> > users_movies = user->get_purchased_movies();
+	vector<shared_ptr<Movie> > other_movies;
+	for(auto &elem : all_movies)
+	{
+		if(find(users_movies.begin(), users_movies.end(), elem) == users_movies.end())
+			other_movies.push_back(elem);
+	}
+	return other_movies;
+}
+
+
+map<int, vector<string>> MoviesRepository::get_comments(int film_id)
+{
+	shared_ptr<Movie> movie = get_movie(film_id);
+	return movie->get_comments();
+}
+

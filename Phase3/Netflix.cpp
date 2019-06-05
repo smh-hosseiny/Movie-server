@@ -115,8 +115,14 @@ std::shared_ptr<Member> Netflix::get_current_user()
 
 void Netflix::charge_account(double amount)
 {
-	current_user -> charge_your_account(amount);
-	cout << OK << endl;
+	try
+	{
+		current_user -> charge_your_account(amount);
+	}
+	catch(const std::exception& e)
+	{
+		throw;
+	}
 }
 
 bool Netflix::is_publisher()
@@ -458,4 +464,34 @@ void Netflix::log_out_admin()
 {
 	admin -> logout();
 	cout << OK << endl;
+}
+
+
+vector<shared_ptr<Movie> > Netflix::get_publishers_movies()
+{
+	return  Movies_repository->get_movies_of_publisher(dynamic_pointer_cast<Publisher>(current_user));
+}
+
+
+shared_ptr<Movie> Netflix::get_film(int film_id)
+{
+	return Movies_repository->get_movie(film_id);
+}
+
+
+vector<shared_ptr<Movie> > Netflix::get_not_purchased_movies()
+{
+	return Movies_repository->get_other_movies(current_user);
+}
+
+
+vector<shared_ptr<Movie> > Netflix::get_recommended_movies(int film_id)
+{
+	return Movies_repository-> get_recommended_movies(film_id, current_user);
+}
+
+
+map<int, vector<string>> Netflix::get_comments_and_replies(int film_id)
+{
+	return Movies_repository-> get_comments(film_id);
 }

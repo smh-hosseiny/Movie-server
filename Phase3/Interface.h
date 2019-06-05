@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 
+class Movie;
+
 class Interface
 {
 private:
@@ -21,6 +23,7 @@ public:
 	void handle_admin_command(const std::vector<std::string> &command);
 	void identify_admin_command(const std::vector<std::string> &command);
 	bool is_publisher();
+	std::vector<std::shared_ptr<Movie> > get_publishers_movies();
 
 };
 

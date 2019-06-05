@@ -16,6 +16,7 @@ public:
 	int get_id();
 	std::shared_ptr<Member> get_author();
 	void get_replies();
+	std::vector<std::string> get_reply();
 	std::string get_content();
 	   
 

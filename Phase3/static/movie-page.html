@@ -1,0 +1,189 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.js">
+
+<style>
+
+
+body{
+  background-image: url(add-movie.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: new times roman;
+}
+
+.card{
+  background: rgba(214,163,106,0.26);
+  color: white;
+  display:block;     
+  margin: auto;
+  width: auto;
+  font-size: 15px;
+}
+.card:hover{
+background :rgba(214,163,106,0.36);
+}
+
+.card-title{
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: rgb(200,200,200)
+}
+
+.card-text{
+  text-align: center;
+  margin-bottom: 5px;
+  margin-left: auto;
+  font-size: 15px;
+  color: white;
+}
+
+.card-link{
+  text-align: center;
+  background: rgba(189,157,75,0.43);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-left: auto;
+  display:block;    
+  font-size: 15px;
+}
+
+.card-link:hover{
+   background: rgba(189,157,75,0.73);
+}
+
+
+.comment-link{
+  text-align: center;
+  background: rgba(189,157,75,0.43);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-right: auto;
+  display:block;    
+  font-size: 15px;
+}
+
+.comment-link:hover{
+   background: rgba(189,157,75,0.73);
+}
+
+
+
+.btn-topright{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-topright:hover{
+   background: rgb(80,1,5);
+}
+
+
+
+.center{
+  margin: auto;
+  text-align: center;
+  /*background-image: url(add-movie.jpg);*/
+  color: white;
+  display:block;     
+  font-size: 19px;
+  width: 850px;
+}
+
+
+
+
+h1{
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 2%;
+  color: black;
+}
+
+</style>
+</head>
+  <body>
+ 
+<div class = "container-fluid">
+  <div class="sticky-top">
+        <form action="/home" method="POST">
+          <button type="submit" class="btn btn-topright" >Logout</button>
+        </form>
+        <form action="/profile" method="POST">
+          <button type="submit" class="btn btn-topright" >Profile</button>
+        </form>
+    </div>
+    
+    <%
+   if(stoi(context["number_of_movies"]) > 0)
+        {
+    %>
+    <div class="center">
+        <div class="card" ;>
+        <!--   <div class="card-body"> -->
+          <h5 class="card-title"><% cout <<context["name"] ;%></h5>
+          <p class="card-text"> director : <% cout <<context["director"] ;%></p>
+          <p class="card-text"> summary : <% cout <<context["summary"] ;%></p>
+          <p class="card-text"> year : <% cout <<stoi(context["year"]) ;%></p>
+          <p class="card-text"> rate : <% cout <<stod(context["rate"]) ;%></p>
+          <p class="card-text"> length : <% cout <<stoi(context["length"]) ;%></p>
+          <p class="card-text"> price : <% cout <<stod(context["price"]) ;%></p>
+          
+          <form action="/remove-movie" method="POST" >
+            <button type="submit" class="card-link">Delete movie</button> 
+            <input type="hidden" name="film_id" value="<% cout << context["film_id"]; %>" >
+          </form>
+          <form action="/comment-movie" method="POST" >
+            <input type="text" name="comment" placeholder="your comment" class="comment-link" required>
+            <input type="hidden" name="film_id" value="<%cout <<  context["film_id"] ;%>" >
+            <button type="submit" class="comment-link">Comment</button>
+          </form>
+          <form action="/rate-movie" method="POST" >
+            <input type="number" name="rate" min="0" max="10" step="1" placeholder="rate" class="comment-link" required>
+            <input type="hidden" name="film_id" value="<%cout <<  context["film_id"] ;%>" >
+            <button type="submit" name="rate" class="comment-link">Rate</button>
+          </form>
+          <form action="/buy-movie" method="POST" >
+            <input type="hidden" name="film_id" value="<%cout <<  context["film_id"] ;%>" >
+            <button type="submit" class="buy-link">Buy</button>
+          </form>
+        </div>
+    </div>
+    
+             
+    <% } %>
+ 
+  </div>
+
+<div class="col-md-2"> 
+</div>
+
+  
+
+  
+<div class = "fixed-bottom">
+  <h1> All rights reserved </h1>
+</div>
+
+</div>
+</body>
+</html>
+

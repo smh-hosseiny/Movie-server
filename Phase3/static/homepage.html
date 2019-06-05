@@ -1,4 +1,4 @@
-<<html>
+<html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -10,10 +10,7 @@
     <link rel="stylesheet" href="bootstrap.js">
 
 <style>
-{
-  margin: 0px;
-  padding: 0px;
-}
+
 
 body{
   background-image: url(background.jpg);
@@ -54,11 +51,21 @@ body{
 }
 
 
-h1{
-  text-align: center;
+.header{
+  background: rgba(107,56,56,0.12);
+  color: white;
+  display:block;     
+  margin: auto;
+  width: auto;
+  margin-top: 50px;
   margin-bottom: 50px;
   font-size: 20px;
-  margin-top: 300px;
+}
+
+
+h1{
+  text-align: center;
+  font-size: 20px;
   color: rgb(200,200,200)
 }
 
@@ -66,33 +73,81 @@ h1{
 </style>
 </head>
 
-<!-- <body>
-   <p><form action="/home" method="post" >
-        <button type="submit" class="topright1" >logou</button>
-      </form> </p>
-
-  <p><form action="/charge_account" method="post" >
-        <button type="submit" class="topright2" >charge account</button>
-      </form> </p> -->
 
 <body>
   <div class = "container-fluid">
-     <img src="netflix_name.jpeg" class="rounded mx-auto d-block">
-       <div class="sticky-top">
-        <form action="/home" method="POST">
-          <button type="submit" class="btn btn-topright" >Logout</button>
-        </form>
-        <form action="/charge-account" method="POST" >
-          <button type="submit" class="btn btn-toprightt" >Charge account</button> 
-        </form>
+  <div class="sticky-top">
+  <form action="/home" method="POST">
+    <button type="submit" class="btn btn-topright" >Logout</button>
+  </form>
+  <form action="/charge-account" method="POST" >
+    <button type="submit" class="btn btn-toprightt" >Charge account</button> 
+  </form>
+  </div>
 
-       </div>
-      <!-- <div class="col-md-3"> </div> -->
-    <div class = "fixed-bottom">
-     <h1> All rights reserved </h1>
-   </div>
+
+  <div class="row">
+  
+  <div  class="col-lg-3 col-lg-offset-1 gauche">      
   </div>
   
- 
-</body>
-</html> 
+  
+    <div  class="col-lg-3 col-lg-offset-1 gauche">      
+        <h1 class="header"> other movies </h1>
+            <%
+            if(stoi(context["number_of_other_movies"]) > 0)
+            {
+            %>
+            <% for(int h =0; h<stoi(context["number_of_other_movies"]); h++) { %>
+            <div class="card";>            
+            <h5 class="card-title"><% cout <<context["other_movies_name" + to_string(h)]; %></h5>
+            <p class="card-text"> director : <% cout <<context["other_movies_director" + to_string(h)]; %></p>
+            <p class="card-text"> year : <% cout <<stoi(context["other_movies_year" + to_string(h)]); %></p>
+            <p class="card-text"> rate : <% cout <<stod(context["other_movies_rate" + to_string(h)]); %></p>
+            <p class="card-text"> length : <% cout <<stoi(context["other_movies_length" + to_string(h)]); %></p>
+            <p class="card-text"> price : <% cout <<stod(context["other_movies_price" + to_string(h)]); %></p>
+            <form action="/movie-page" method="POST">
+            <button type="submit" class="card-link">Movie Page</button>
+            <input type="hidden" name="id" value= "<% cout << context["other_movies_film_id" + to_string(h)]; %>" >
+            </form>
+            </div>
+          <% } %>               
+      <% } %> 
+    <br>
+  </div>
+    
+  <div class="col-lg-3 corps">
+  
+    <h1 class="header"> purchased movies </h1>
+        <%
+            if(stoi(context["number_of_purchased_movies"]) > 0)
+        {
+        %>
+          <% for(int j =0; j<stoi(context["number_of_purchased_movies"]); j++) { %>
+        <div class="card" ;>
+        <h5 class="card-title"><% cout <<context["purchased_movies_name" + to_string(j)]; %></h5>
+        <p class="card-text"> director : <% cout <<context["purchased_movies_director" + to_string(j)]; %></p>
+        <p class="card-text"> year : <% cout <<stoi(context["purchased_movies_year" + to_string(j)]); %></p>
+        <p class="card-text"> rate : <% cout <<stod(context["purchased_movies_rate" + to_string(j)]); %></p>
+        <p class="card-text"> length : <% cout <<stoi(context["purchased_movies_length" + to_string(j)]); %></p>
+        <p class="card-text"> price : <% cout <<stod(context["purchased_movies_price" + to_string(j)]); %></p>
+        <form action="/movie-page" method="POST">
+        <button type="submit" class="card-link">Movie Page</button>
+        <input type="hidden" name="id" value= "<% cout << context["purchased_movies_film_id" + to_string(j)]; %>" >
+        </form>
+        </div>
+      <% } %>               
+    <% } %> 
+  <br>
+</div>
+    
+        
+</div>
+</div>
+
+    
+  
+  
+  </body>
+  </html> 
+        

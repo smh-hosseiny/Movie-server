@@ -51,7 +51,7 @@ private:
   public:
     static void runSystemCommand(std::string command, std::string errorMessage);
     static int writeMapToFile(std::string fname,
-                              std::map<std::string, std::string> *m);
+      std::map<std::string, std::string> *m);
   };
 
 public:

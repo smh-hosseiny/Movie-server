@@ -1,66 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.js">
+
+<style>
+
+
+body{
+  background-image: url(background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: new times roman;
+}
+
+.btn-topright{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 1%;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-topright:hover{
+   background: rgb(80,1,5);
+}
+
+
+.btn-toprightt{
+  background: rgb(107,56,56);
+  color: white;
+  border: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 88%;
+  font-size: 19px;
+  width: 200px;
+}
+
+.btn-toprightt:hover{
+   background: rgb(80,1,5);
+}
+
+
+.header{
+  background: rgba(107,56,56,0.12);
+  color: white;
+  display:block;     
+  margin: auto;
+  width: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 20px;
+}
+
+
+h1{
+  text-align: center;
+  font-size: 20px;
+  color: rgb(200,200,200)
+}
+
+
+</style>
 </head>
 
+
 <body>
-    <form action="/colors">
-        Choose color :
-        <span>
-            <input type="radio" name="color" value="red" checked> Red
-            <input type="radio" name="color" value="navy"> Navy
-            <input type="radio" name="color" value="green"> Green
-        </span>
-        <br>
-        <span>
-            Your name :
-            <input type="text" name="name" />
-        </span>
-        <input type="submit" />
-    </form>
+  <div class = "container-fluid">
+  <div class="sticky-top">
+  <form action="/home" method="POST">
+    <button type="submit" class="btn btn-topright" >Logout</button>
+  </form>
+  <form action="/charge-account" method="POST" >
+    <button type="submit" class="btn btn-toprightt" >Charge account</button> 
+  </form>
+  </div>
 
-    <%
-        if(context["color"] == "red")
-        {
-    %>
-    <div style="color:red; height: 10px;">
-        <%
-                cout << context["name"];
-            %>
-    </div>
-    <%
-        }
-    %>
-    <%
-        if(context["color"] == "navy")
-        {
-    %>
-    <div style="color:navy; height: 10px;">
-        <%
-                cout << context["name"];
-            %>
-    </div>
-    <%
-        }
-    %>
-    <%
-        if(context["color"] == "green")
-        {
-    %>
-    <div style="color:green; height: 10px;">
-        <%
-                cout << context["name"];
-            %>
-    </div>
-    <%
-        }
-    %>
 
-</body>
+  <div class="row">
+  
+  <div  class="col-lg-3 col-lg-offset-1 gauche">      
+  </div>
+  
+  
+    <div  class="col-lg-3 col-lg-offset-1 gauche">      
+        <h1 class="header"> other movies </h1>
+            <%
+            if(stoi(context["number_of_other_movies"]) > 0)
+            {
+            %>
+            <% for(int h =0; h<stoi(context["number_of_other_movies"]); h++) { %>
+            <div class="card";>            
+            <h5 class="card-title"><% cout <<context["other_movies_name" + to_string(h)]; %></h5>
+            <p class="card-text"> director : <% cout <<context["other_movies_director" + to_string(h)]; %></p>
+            <p class="card-text"> year : <% cout <<stoi(context["other_movies_year" + to_string(h)]); %></p>
+            <p class="card-text"> rate : <% cout <<stod(context["other_movies_rate" + to_string(h)]); %></p>
+            <p class="card-text"> length : <% cout <<stoi(context["other_movies_length" + to_string(h)]); %></p>
+            <p class="card-text"> price : <% cout <<stod(context["other_movies_price" + to_string(h)]); %></p>
+            <form action="/movie-page" method="POST">
+            <button type="submit" class="card-link">Movie Page</button>
+            <input type="hidden" name="id" value= "<% cout << context["other_movies_film_id" + to_string(h)]; %>" >
+            </form>
+            </div>
+          <% } %>               
+      <% } %> 
+    <br>
+  </div>
+    
+  <div class="col-lg-3 corps">
+  
+    <h1 class="header"> purchased movies </h1>
+        <%
+            if(stoi(context["number_of_purchased_movies"]) > 0)
+        {
+        %>
+          <% for(int j =0; j<stoi(context["number_of_purchased_movies"]); j++) { %>
+        <div class="card" ;>
+        <h5 class="card-title"><% cout <<context["purchased_movies_name" + to_string(j)]; %></h5>
+        <p class="card-text"> director : <% cout <<context["purchased_movies_director" + to_string(j)]; %></p>
+        <p class="card-text"> year : <% cout <<stoi(context["purchased_movies_year" + to_string(j)]); %></p>
+        <p class="card-text"> rate : <% cout <<stod(context["purchased_movies_rate" + to_string(j)]); %></p>
+        <p class="card-text"> length : <% cout <<stoi(context["purchased_movies_length" + to_string(j)]); %></p>
+        <p class="card-text"> price : <% cout <<stod(context["purchased_movies_price" + to_string(j)]); %></p>
+        <form action="/movie-page" method="POST">
+        <button type="submit" class="card-link">Movie Page</button>
+        <input type="hidden" name="id" value= "<% cout << context["purchased_movies_film_id" + to_string(j)]; %>" >
+        </form>
+        </div>
+      <% } %>               
+    <% } %> 
+  <br>
+</div>
+    
+        
+</div>
+</div>
 
-</html>
+    
+  
+  
+  </body>
+  </html> 
+        

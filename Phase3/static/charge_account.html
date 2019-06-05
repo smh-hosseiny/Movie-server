@@ -8,11 +8,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap.css">
     <link rel="stylesheet" href="bootstrap.js">
+
 <style>
-{
-  margin: 0px;
-  padding: 0px;
-}
+
 
 body{
   background-image: url(paypal.png);
@@ -42,46 +40,46 @@ body{
 
 .form-control{
   text-align: center;
-  background: LightBlue;
+  background:#add8e657;
   color: black;
   border: 20px;
   margin-left: 30px;
-  margin-top: 20%;
+  margin-top: 10px;
+  display:block;     
   font-size: 19px;
   width: 200px;
 }
 
 .form-control:hover{
-  background: blue;
+  background:#add8e6b5;
 }
 
 
 
 .submitform{
   text-align: center;
-  background: LightBlue;
+  background:#add8e657;
   color: black;
   border: 20px;
   border-radius: 10px;
-  margin-top: 15px;
-  margin-bottom: 20%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display:block;     
   margin-left: 30px;
   font-size: 19px;
   width: 200px;
 }
 
 .submitform:hover{
-  background: blue;
+  background:#add8e6b5;
 }
 
 
 .center{
   margin: auto;
   text-align: center;
-  background-image: url(pay.jpg);
+  background-color: #00aaff12;
   color: white;
-  border: 50px;
-  border-radius: 30px;
   margin-top: 20px;
   display:block;     
   font-size: 19px;
@@ -103,17 +101,14 @@ h1{
 <body>
   <div class = "container-fluid">
     <div class="sticky-top">
-      <!-- <button type="submit" class="btn btn-topright">Logout</button>     -->
       <a href="/home"> <div class="btn btn-topright">Logout</div></a>
     </div>
 
   <form  action="/charge-money" method="POST">
-    <section class="row">
-      <div class="center">
-        <input name="amount" type="number" min="0" step="500" class="form-control" placeholder="amount">
-    	  <button type="submit" class="submitform">charge account</button>
-      </div>
-    </section>
+    <div class="center">
+      <input name="amount" type="number" min="0" step="500" class="form-control" placeholder="amount">
+      <button type="submit" class="submitform">charge account</button>
+    </div>
 	</form>
 
     <div class = "fixed-bottom">

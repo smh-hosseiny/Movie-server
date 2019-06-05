@@ -95,6 +95,14 @@ public:
 
   void log_out_admin();
 
+  std::vector<std::shared_ptr<Movie> > get_publishers_movies();
+
+  std::vector<std::shared_ptr<Movie> > get_not_purchased_movies();
+
+  std::shared_ptr<Movie> get_film(int film_id);
+
+  std::vector<std::shared_ptr<Movie> > get_recommended_movies(int film_id);
+  std::map<int, std::vector<std::string>> get_comments_and_replies(int film_id);
 
 private:
 	static std::shared_ptr<Netflix> the_instance;

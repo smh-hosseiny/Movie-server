@@ -104,7 +104,7 @@ $(BUILD_DIR)/route.o: server/route.cpp server/route.hpp utils/utilities.hpp util
 	$(CC) $(CF) ${CFLAG} server/route.cpp -o $(BUILD_DIR)/route.o
 
 $(BUILD_DIR)/handlers.o: handlers.cpp server/server.hpp utils/utilities.hpp utils/response.hpp\
- utils/request.hpp utils/include.hpp Exception.h
+ utils/request.hpp utils/include.hpp Exception.h Movie.h Interface.h Netflix.h
 	$(CC) $(CF) ${CFLAG} handlers.cpp -o $(BUILD_DIR)/handlers.o
 
 $(BUILD_DIR)/my_server.o: my_server.cpp server/server.hpp utils/utilities.hpp utils/response.hpp\

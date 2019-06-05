@@ -5,6 +5,7 @@
 #include "Exception.h"
 #include <algorithm>
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -175,4 +176,18 @@ void Movie::display_comments()
 		elem -> get_replies();
 	}
 	cout << endl;
+}
+
+map<int, vector<string>> Movie::get_comments()
+{
+	map<int, vector<string>> comments_and_replies;
+	for(auto &elem : comments)
+	{
+		comments_and_replies[elem->get_id()].push_back(elem->get_content());
+		for(auto &elements : elem->get_reply())
+		{
+			comments_and_replies[elem->get_id()].push_back(elements);
+		}
+	}
+	return comments_and_replies;
 }

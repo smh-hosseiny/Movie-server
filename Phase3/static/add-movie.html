@@ -108,11 +108,12 @@ body{
 .center{
   margin: auto;
   text-align: center;
-  background-image: url(add-movie.jpg);
+  /*background-image: url(add-movie.jpg);*/
+  background-color: #ffffc126;
   color: white;
-  border: 50px;
-  border-radius: 30px;
-  margin-top: 20px;
+  /*border: 50px;*/*/
+  /*border-radius: 30px;*/
+  /*margin-bottom: 30%;*/
   display:block;     
   font-size: 19px;
   width: 850px;
@@ -137,7 +138,7 @@ h1{
           <button type="submit" class="btn btn-topright" >Logout</button>
         </form>
     </div>
-    <img src="netflix_name.jpeg" class="image-responsive rounded mx-auto d-block">
+   <!--  <img src="netflix_name.jpeg" class="image-responsive rounded mx-auto d-block"> -->
     <form action="/add-film" method="POST" class="center">
       <section class="row">
         <div class="center">
@@ -153,6 +154,12 @@ h1{
         </div>
       </section>
       </form>
+
+       <% for(int i =0; i<5; i++) { %>
+        <% cout << "babe " << i+1 << endl; %>
+    <% } %>
+
+      
     <div class = "fixed-bottom">
      <h1> All rights reserved </h1>
    </div>

@@ -1,5 +1,6 @@
 #include "POST_Handler.h"
 #include "Netflix.h"
+#include<iostream>
 
 using namespace std;
 
@@ -353,7 +354,6 @@ void POST_Handler::handle_removing_film(const vector<string> &command)
     	throw;
     }
 }
-
 
 
 

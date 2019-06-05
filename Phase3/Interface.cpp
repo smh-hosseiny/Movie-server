@@ -9,6 +9,8 @@
 #include "PermissionDenied.h"
 #include "NotFound.h"
 #include "Admin.h"
+#include "Movie.h"
+#include <memory>
 
 #define POST "POST"
 #define EMPTY ""
@@ -58,8 +60,8 @@ void Interface::handle_input(const vector<string> &input)
 {
     try
     {
-    	//if(Netflix::get_instance() -> is_loggedin_user(input))
-        handle_command(input);
+    	if(Netflix::get_instance() -> is_loggedin_user(input))
+            handle_command(input);
     }
 
     catch(const Exception &e)
@@ -134,4 +136,10 @@ void Interface::handle_admin_command(const vector<string> &command)
 bool Interface::is_publisher()
 {
     return Netflix::get_instance()->is_publisher();
+}
+
+
+vector<shared_ptr<Movie> > Interface::get_publishers_movies()
+{
+    return Netflix::get_instance()->get_publishers_movies();
 }

@@ -39,3 +39,8 @@ void Comment::get_replies()
 		cout << id << "." << i+1 << ". " << reply[i] << endl;
 	}
 }
+
+vector<string> Comment::get_reply()
+{
+	return reply;
+}

@@ -1,0 +1,10 @@
+comments0=kjnh
+director=z
+film_id=1
+length=1
+name=a
+number_of_comments=1
+number_of_movies=1
+price=500.000000
+rate=0.000000
+year=2016

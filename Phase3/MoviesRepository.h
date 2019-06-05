@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include "Movie.h"
 #include "MovieGraph.h"
 
@@ -77,6 +78,10 @@ public:
 	void show_graph();
 
 	void check_members_favorite_movies(const std::vector<int> purchased_movies_id);
+
+	std::vector<std::shared_ptr<Movie> > get_other_movies(std::shared_ptr<Member> user);
+
+	std::map<int, std::vector<std::string> > get_comments(int film_id);
 
 
 private:

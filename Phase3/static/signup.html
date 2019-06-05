@@ -30,7 +30,7 @@ body{
   border-radius: 30px;
   margin-top: 20px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 250px;
 }
 
@@ -46,7 +46,7 @@ body{
   margin-top: 10%;
   margin-left: 25px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 200px;
 }
 
@@ -62,7 +62,7 @@ body{
   margin-top: 20px;
   margin-left: 25px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 200px;
 }
 
@@ -80,7 +80,7 @@ body{
   margin-bottom: 5%;
   margin-left: 25px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 200px;
 }
 
@@ -98,7 +98,7 @@ body{
   margin-left: 25px;
   margin-top: 20px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 200px;
 }
 
@@ -111,7 +111,7 @@ body{
   border-radius: 30px;
   margin-top: 20px;
   display:block;     
-  font-size: 19px;
+  font-size: 15px;
   width: 250px;
 }
 
@@ -126,66 +126,32 @@ h1{
 
 </style>
 </head>
-  <body>
-  <!--   <h1>NETFLIX</h1>
-    <img src="netflix_name.jpeg" class="rounded mx-auto d-block">
-    <br />
-    <div style="background-color: black; padding: 1%; max-width: 300px; border-radius: 3px; margin: auto; ">
-      <form action="/login" method="post">
-        <p>Login</p>
-        <input name="username" type="text" placeholder="Username" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" required>
-        <input name="password" type="password" placeholder="Password" style="display:block; margin: auto; margin-bottom: 30px; padding: 5px; width: 94%;" required>
-        <button type="submit" style="display:block; width: 100%; padding: 7px;">Login</button>
-      </form>
-    </div>
-  </body>
-</html> -->
-<!-- 
-  <div style="background-color: rgb(5,1,1); padding: 1%; max-width: 300px; border-radius: 3px; margin: auto; ">
-      <form action="/signup" method="post">
-        <p  style="color:white;">Signup</p>
-        <input name="username" type="text" placeholder="Username" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" required>
-        <input name="password" type="password" placeholder="Password" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" required>
-        <input name="confirm_password" type="password" placeholder="Confirm Password" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" required>
-        <input name="email" type="email" placeholder="Email" style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;" required>
-        <input name="age" type="number" placeholder="age"  min="0" max="150" step="1"  style="display:block; margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;
-        " required>
-        <p style=" margin: auto; margin-bottom: 10px; padding: 5px; width: 94%;color:white;">publisher
-         <input type="checkbox" name="publisher"> </p> 
-        <button type="submit" style=" display:block; width: 100%; padding: 7px;">Signup</button>
-      </form>
-    </div> -->
-
-
+<body>
 <div class = "container-fluid">
 
-    <img src="netflix_name.jpeg" class="image-responsive rounded mx-auto d-block">
-    <form action="/signup" method="POST" class="center">
-      <section class="row">
-        <div class="center">
-          <input name="username" type="text" placeholder="Username" class="username"  required>
-          <input name="password" type="password" placeholder="Password" class="password"  required>
-          <input name="confirm_password" type="password" placeholder="Confirm Password" class="password"  required>
-          <input name="email" type="email" placeholder="Email" class="password"  required>
-          <input name="age" type="number" placeholder="age"  min="0" max="150" step="1" class="password" required>
-        <!--   <div class="form-check">
-            <label class="form-check-label">
-              <input type="checkbox" name="publisher" class="form-check-input" > publisher
-            </label>
-          </div> -->
-          <label class="custom-control custom-checkbox">
-            <input type="checkbox" name="publisher">
-            <span class="custom-control-description">publisher</span>
-          </label>
-          <button type="submit" class="btn signup-btn">Signup</button>
-          <!-- <a href="/signup"> <div class="btn signup-btn">Signup</div></a> -->
-        </div>
-      </section>
-      </form>
-    <div class = "fixed-bottom">
-     <h1> All rights reserved </h1>
-   </div>
+  <img src="netflix_name.jpeg" class="image-responsive rounded mx-auto d-block">
+  <form action="/signup" method="POST" class="center">
+    <section class="row">
+      <div class="center">
+        <input name="username" type="text" placeholder="Username" class="username"  required>
+        <input name="password" type="password" placeholder="Password" class="password"  required>
+        <input name="confirm_password" type="password" placeholder="Confirm Password" class="password"  required>
+        <input name="email" type="email" placeholder="Email" class="password"  required>
+        <input name="age" type="number" placeholder="age"  min="0" max="150" step="1" class="password" required>
+     
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" name="publisher">
+          <span class="custom-control-description">publisher</span>
+        </label>
+        <button type="submit" class="btn signup-btn">Signup</button>
+        <!-- <a href="/signup"> <div class="btn signup-btn">Signup</div></a> -->
+    </div>
+  </section>
+  </form>
+  <div class = "fixed-bottom">
+    <h1> All rights reserved </h1>
   </div>
- </body>
+</div>
+</body>
 </html>
 

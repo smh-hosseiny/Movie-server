@@ -37,6 +37,7 @@ public:
 	void remove_comment(int comment_id);
 	void handle_remove_comment(int comment_id);
 	void display_comments();
+	std::map<int, std::vector<std::string>> get_comments();
 
 private:
 	std::string film_name;
