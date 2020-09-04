@@ -1,5 +1,6 @@
 # AP-final
-Movie Server
+Movie Server.
+
 To run the project:
 $ make
 $ ./server.out
