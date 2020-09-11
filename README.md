@@ -1,7 +1,7 @@
 # AP-final
 Movie Server.
 
-To run the project:
+To run the project, use 'Phase3' folder:
 
 $ make
 
